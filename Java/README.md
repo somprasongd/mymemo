@@ -9,7 +9,11 @@
 	1. ดาวน์โหลด Netbeans [https://netbeans.org/](https://netbeans.org/)
 	2. เมื่อติดตั้งเสร็จให้ เปิด และปิด Netbeans ก่อน 1 ครั้ง
 	3. แก้ไข config เพื่อเพิ่ม RAM ที่ไฟล์ /etc/netbeans.conf ที่ "netbeans_default _options"
-	`netbeans_default_options="-J-client -J-Xss2m -J-Xms1024m -J-XX:PermSize=350m -J-Xmx3072m -J-XX:MaxPermSize=700m -J-Dapple.laf.useScreenMenuBar=true -J-Dapple.awt.graphics.UseQuartz=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.dpiaware=true -J-Dsun.zip.disableMemoryMapping=true"`
+	
+	
+	```
+	netbeans_default_options="-J-client -J-Xss2m -J-Xms1024m -J-XX:PermSize=350m -J-Xmx3072m -J-XX:MaxPermSize=700m -J-Dapple.laf.useScreenMenuBar=true -J-Dapple.awt.graphics.UseQuartz=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.dpiaware=true -J-Dsun.zip.disableMemoryMapping=true"
+	```
 
 - เนื้อหา
 	
