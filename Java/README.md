@@ -8,7 +8,7 @@
 	
 	1. ดาวน์โหลด Netbeans [https://netbeans.org/](https://netbeans.org/)
 	2. เมื่อติดตั้งเสร็จให้ เปิด และปิด Netbeans ก่อน 1 ครั้ง
-	3. แก้ไข config เพื่อเพิ่ม RAM ที่ไฟล์ /etc/netbeans.conf ที่ "netbeans_default _options"
+	3. แก้ไข config เพื่อเพิ่ม RAM ที่ไฟล์ /etc/netbeans.conf ที่ netbeans\_default\_options
 	
 	
 	```
