@@ -5,3 +5,7 @@
 - [Java 8] (./Java)
   
   เรื่องแรกเอา Java 8 เลยแล้วกัน ห่างหายจากการเขียน Java ไปหลายเดือนเริ่มศึกษา Java 8 ใหม่เลยแล้วกัน
+  
+- [Netbeans Platform] (./Netbeans Platform)
+  
+  เกี่ยวกับการ config และการพัฒนา Application โดยใช้ Netbeans Platform
