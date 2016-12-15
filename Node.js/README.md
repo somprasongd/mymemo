@@ -23,7 +23,7 @@ DOM Object | document | ไม่มี
 Process Object | ไม่มี | process
 
 #### การทำงานแบบ Non-Blocking I/O ####
-![Blocking V/S Non-Blocking](/resources/images/non-blockin-io.PNG)
+![Blocking V/S Non-Blocking](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/non-blockin-io.PNG)
 ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
 
 #### การทำงานของ Event-Driven ####
