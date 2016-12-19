@@ -57,6 +57,7 @@ gerUser(123, (userObj) => {
 });
 ```
     
+**หมายเหตุ** การใช้ arrow function เช่น `var myFunc = () => {};` ไม่ควรใช้เมื่อต้องการใช้ `this` และ `arguments` หรือใช้สร้าง function ใน object
 
 #### Node Module ####
 
@@ -141,4 +142,4 @@ var person = JSON.parse(personStr);
 
 #### อื่นๆ ####
 
-- การใช้ arrow function เช่น `var myFunc = () => {};` ไม่ควรใช้เมื่อต้องการใช้ `this` และ `arguments` หรือใช้สร้าง function ใน object
+- การสร้าง Web Server โดยใช้ [Express](./Express)
