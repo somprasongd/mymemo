@@ -24,9 +24,39 @@ Process Object | ไม่มี | process
 
 #### การทำงานแบบ Non-Blocking I/O ####
 ![Blocking V/S Non-Blocking](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/non-blockin-io.PNG)
+
 ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
 
-#### การทำงานของ Event-Driven ####
+#### การทำงานของ Call Stack & Event Loop ####
+![eventloop 1](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/event_loop_01.gif)
+
+![eventloop 1](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/event_loop_02.gif)
+
+![eventloop 1](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/event_loop_03.gif)
+
+ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
+
+#### การทำงานของ Callback Function ####
+
+	คือส่งฟังก์ชันไปใน function ที่เรียกใช้ เพื่อเมื่อมันทำงานเสร็จแล้วให้เรียกฟังก์ชันไหนทำงานต่อ
+
+
+    ```javascript
+	var getUser = (id, callback) => {
+		var user = {
+			id: id,
+			name: 'Somprasong'
+		};
+
+		setTimeout(() => {
+			callback(user);
+		}, 2000);
+	}
+
+	gerUser(123, (userObj) => {
+		console.log(userObj);
+	});
+	```
 
 #### Node Module ####
 
