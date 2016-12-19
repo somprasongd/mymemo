@@ -38,25 +38,24 @@ Process Object | ไม่มี | process
 
 #### การทำงานของ Callback Function ####
 
-	คือส่งฟังก์ชันไปใน function ที่เรียกใช้ เพื่อเมื่อมันทำงานเสร็จแล้วให้เรียกฟังก์ชันไหนทำงานต่อ
-
+คือส่งฟังก์ชันไปใน function ที่เรียกใช้ เพื่อเมื่อมันทำงานเสร็จแล้วให้เรียกฟังก์ชันไหนทำงานต่อ
 
     ```javascript
-	var getUser = (id, callback) => {
-		var user = {
-			id: id,
-			name: 'Somprasong'
-		};
+    var getUser = (id, callback) => {
+	var user = {
+		id: id,
+		name: 'Somprasong'
+	};
 
-		setTimeout(() => {
-			callback(user);
-		}, 2000);
-	}
+	setTimeout(() => {
+		callback(user);
+	}, 2000);
+    }
 
-	gerUser(123, (userObj) => {
-		console.log(userObj);
-	});
-	```
+    gerUser(123, (userObj) => {
+	console.log(userObj);
+    });
+    ```
 
 #### Node Module ####
 
@@ -70,7 +69,8 @@ Process Object | ไม่มี | process
 	const fs = require('fs');
 
 	fs.appendFile('greetings.txt', 'Hello World!');
-	```
+    ```
+    
 - File Module เป็น module ที่่สร้างขึ้นมาเองเอง ใช้ `require('./notes');` ต้องระบุตำแหน่งของไฟล์ (ถ้าไม่ใส่นามสกุลไฟล์ require จะไปถ้าที่ .js ให้เอง) โดยไฟล์ notes.js ต้องมี module.exports หรือ exports ด้วย
 
 - Folder Module จะระบุ path ไปยังโฟลเดอร์ที่มีไฟล์ package.json เช่น `var say = require('./module');`
