@@ -40,22 +40,23 @@ Process Object | ไม่มี | process
 
 คือส่งฟังก์ชันไปใน function ที่เรียกใช้ เพื่อเมื่อมันทำงานเสร็จแล้วให้เรียกฟังก์ชันไหนทำงานต่อ
 
-    ```javascript
-    var getUser = (id, callback) => {
-	var user = {
-		id: id,
-		name: 'Somprasong'
-	};
+```javascript
+var getUser = (id, callback) => {
+    var user = {
+        id: id,
+        name: 'Somprasong'
+    };
 
-	setTimeout(() => {
-		callback(user);
-	}, 2000);
-    }
+    setTimeout(() => {
+        callback(user);
+    }, 2000);
+}
 
-    gerUser(123, (userObj) => {
-	console.log(userObj);
-    });
-    ```
+gerUser(123, (userObj) => {
+    console.log(userObj);
+});
+```
+    
 
 #### Node Module ####
 
@@ -112,17 +113,17 @@ Process Object | ไม่มี | process
 
 #### การใช้งานกับ JSON ####
 
-	```javascript
-	// แปลงจาก Object เป็น JSON
-	var obj = {
-		name: "Somprasong"
-	};
-	var strObj = JSON.stringify(obj);
+```javascript
+// แปลงจาก Object เป็น JSON
+var obj = {
+	name: "Somprasong"
+};
+var strObj = JSON.stringify(obj);
 
-	// แปลงจาก JSON เป็น Object
-	var personStr = '{"name": "Somprasong", "age": 31}';
-	var person = JSON.parse(personStr);
-	```
+// แปลงจาก JSON เป็น Object
+var personStr = '{"name": "Somprasong", "age": 31}';
+var person = JSON.parse(personStr);
+```
 
 #### Debuging ####
 
