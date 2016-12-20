@@ -126,6 +126,16 @@ var personStr = '{"name": "Somprasong", "age": 31}';
 var person = JSON.parse(personStr);
 ```
 
+#### Config Environment ####
+
+- Windows
+	- ใช้คำสั่ง $ set xxx=yyy เช่น `$ set NODE_ENV=production`
+
+- OS X
+	- ใช้คำสั่ง $ env xxx=yyy เช่น `$ env NODE_ENV=production`
+
+- วิธีการเรียกใช้งานในโค้ด โดยผ่าน object ที่ชื่่อ process.env เช่น `if(process.env.NODE_ENV === 'production')`
+
 #### Debuging ####
 
 - ใช้คำสั่ง `node debug app.js`
@@ -143,3 +153,4 @@ var person = JSON.parse(personStr);
 #### อื่นๆ ####
 
 - การสร้าง Web Server โดยใช้ [Express](./Express)
+- การทดสอบระบบโดยใช้ [Mocha](./Mocha)
