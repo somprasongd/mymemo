@@ -63,7 +63,7 @@ it('should square number', () => {
 // using CommonJS modules
 var expect = require('expect');
 
-it(should add two number', () => {
+it('should add two number', () => {
   var res = utils.add(33, 11);
   expect(res).toBe(44);
 });
