@@ -49,6 +49,20 @@ MongoDB เป็นระบบฐานข้อมูลแบบ NoSql ซ�
 
 ![Collections](https://github.com/somprasongd/mymemo/blob/master/Databases/MongoDB/resources/images/crud-annotated-collection.png)
 
+**SQL to MongoDB Mapping Chart**
+
+
+SQL Terms/Concepts | MongoDB Terms/Concepts
+------------ | ------------
+database | database
+table | collection
+row | document or BSON document
+column | field
+index | index
+table joins | embedded documents and linking
+primary key (Specify any unique column or column combination as primary key.) | primary key (In MongoDB, the primary key is automatically set to the _id field.)
+aggregation (e.g. group by) | aggregation pipeline (See the SQL to [Aggregation Mapping Chart.](https://docs.mongodb.com/manual/reference/sql-aggregation-comparison/))
+
 **วิธีการสร้าง Databases & Collections**
  
 จะใช้ mongo shell `use <db>` เพื่อระบุฐานข้อมูลที่ต้องการใช้ก่อน
@@ -234,20 +248,76 @@ If you convert BSON to JSON, see the [Extended JSON](https://docs.mongodb.com/ma
 
 	การอัพเดท documents ทำได้ 4 วิธี
 	
-	1. `db.collection.updateOne()` Updates at first a single document that match a specified filter.
-	2. `db.collection.updateMany()` Update all documents that match a specified filter.
-	3. `db.collection.replaceOne()` Replaces at first a single document that match a specified filter.
-	4. `db.collection.update()` Either updates or replaces a single document that match a specified filter or updates all documents that match a specified filter. *โดยปกติ update() จะเป็นการอัพเดทรายการเดียว ถ้าต้องการหลายรายการใช้ multi option `{ multi: true }`*
+	1. `db.collection.updateOne(<filter>, <update>, {upsert: <boolean>, writeConcern: <document>, collation: <document>})` Updates at first document that match a specified filter. กรณี upsert: true คือถ้าไม่มีตามเงื่อนไขให้ insert ใหม่ 
+	2. `db.collection.updateMany(<filter>, <update>, {upsert: <boolean>, writeConcern: <document>, collation: <document>})` Update all documents that match a specified filter.
+	3. `db.collection.replaceOne(<filter>, <replacement>, {upsert: <boolean>, writeConcern: <document>, collation: <document>})` Replaces at first document that match a specified filter.
+	4. `db.collection.update(<filter>, <update>, {upsert: <boolean>, multi: <boolean>, writeConcern: <document>})` Either updates or replaces a single document that match a specified filter or updates all documents that match a specified filter. *โดยปกติ update() จะเป็นการอัพเดทรายการเดียว ถ้าต้องการหลายรายการใช้ multi option `{ multi: true }`*
 	
 	การใช้งาน
-
+	- [updateOne()](https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/#db.collection.updateOne "db.collection.updateOne()")
+	```
+	db.users.updateOne(
+	   { "favorites.artist": "Picasso" },
+	   {
+	     $set: { "favorites.food": "pie", type: 3 },
+	     $currentDate: { lastModified: true }
+	   }
+	)
+	```
+	หมายถึงให้อัพเดทที่ document แรกที่เจอจากเงื่อนไข `favorites.artist = "Picasso"` และใช้ `$set` operator ในการอัพเดทค่า ส่วน `$currentDate` operator สั่งให้อัพเดท lastModified field เป็น current date ซึ่งถ้าไม่มี field นี้ จะสร้างให้
+	- [updateMany()](https://docs.mongodb.com/manual/reference/method/db.collection.updateMany/#db.collection.updateMany "db.collection.updateMany()")
+	```
+	db.users.updateMany(
+	   { "favorites.artist": "Picasso" },
+	   {
+	     $set: { "favorites.artist": "Pisanello", type: 3 },
+	     $currentDate: { lastModified: true }
+	   }
+	)
+	```
+	หมายถึงให้อัพเดททุก document ที่เจอจากเงื่อนไข `favorites.artist = "Picasso"` และใช้ `$set` operator ในการอัพเดทค่า ส่วน `$currentDate` operator สั่งให้อัพเดท lastModified field เป็น current date ซึ่งถ้าไม่มี field นี้ จะสร้างให้
+	- [replaceOne()](https://docs.mongodb.com/manual/reference/method/db.collection.replaceOne/#db.collection.replaceOne "db.collection.replaceOne()")
+	```
+	db.users.replaceOne(
+	   { name: "abc" },
+	   { name: "amy", age: 34, type: 2, status: "P", favorites: { "artist": "Dali", food: "donuts" } }
+	)
+	```
+	หมายถึงให้ replace document แรกที่เจอจากเงื่อนไข `name = "abc"` ด้วย new document ทุก field ยกเว้น `_id` จริงๆ แล้วสามารถใช้ `db.collection.update({}, {})` ได้เช่นกัน
+	```
+	db.users.update(
+	   { name: "abc" },
+	   { name: "amy", age: 34, type: 2, status: "P", favorites: { "artist": "Dali", food: "donuts" } }
+	)
+	```
+	- [update()](https://docs.mongodb.com/manual/reference/method/db.collection.update/#db.collection.update "db.collection.update()")
+	```
+	db.users.update(
+	   { "favorites.artist": "Picasso" },
+	   {
+	     $set: { "favorites.artist": "Pisanello", type: 3 },
+	     $currentDate: { lastModified: true }
+	   }
+	)
+	```
+	หมายถึงให้อัพเดท document แรกที่เจอจากเงื่อนไข `favorites.artist = "Picasso"` และใช้ `$set` operator ในการอัพเดทค่า ส่วน `$currentDate` operator สั่งให้อัพเดท lastModified field เป็น current date ซึ่งถ้าไม่มี field นี้ จะสร้างให้ แต่ถ้าต้องการให้ update ทุก document ให้ใส่ `{ multi: true }`
+	```
+	db.users.update(
+	   { "favorites.artist": "Picasso" },
+	   {
+	     $set: { "favorites.artist": "Pisanello", type: 3 },
+	     $currentDate: { lastModified: true }
+	   },
+	   { multi: true }
+	)
+	```
 
 - Delete Documents
 
 	การลบ documents ทำได้ 3 วิธี
 	
 	1. `db.collection.remove()` Delete a single document or all documents that match a specified filter.
-	2. `db.collection.deleteOne()` Delete at first a single document that match a specified filter. หรือจะใช้ remove() ที่กำหนด justOne: true) 
+	2. `db.collection.deleteOne()` Delete at first document that match a specified filter. หรือจะใช้ remove() ที่กำหนด justOne: true) 
 	3. `db.collection.deleteMany()` Delete all documents that match a specified filter.
 	
 	การใช้งาน
@@ -255,3 +325,64 @@ If you convert BSON to JSON, see the [Extended JSON](https://docs.mongodb.com/ma
 	- ลบทั้งหมด `db.users.deleteMany({})` หรือ `db.users.remove({})`
 	- ลบทั้งหมดตามเงื่อนไข `db.users.deleteMany({ status : "A" })` หรือ `db.users.remove( { status : "A" } )`
 	- ลบ document แรกที่เจอตามเงื่อนไข `db.users.deleteOne( { status: "D" } )` หรือ `db.users.remove( { status: "D" }, 1)`
+
+- Bulk Write Operations
+	
+	เอาไว้จัดการการ insert, update, remove ข้อมูลขนาดใหญ่ๆ (insert ขนาดใหญ่ ใช้ `db.collection.insertMany()`) โดยปกติจะทำงานตามลำดับ ถ้าไม่ต้องการให้ทำงานตามลำดับใช้ option `ordered: false` ซึ่ง `bulkWrite()` method จะรองรับคำสั่งดังนี้
+	- insertOne
+	- updateOne
+	- updateMany
+	- replaceOne
+	- deleteOne
+	- deleteMany
+	
+	ตัวอย่างการใช้งาน
+	
+	```
+	try {
+	   db.characters.bulkWrite(
+	      [
+	         { insertOne :
+	            {
+	               "document" :
+	               {
+	                  "_id" : 4, "char" : "Dithras", "class" : "barbarian", "lvl" : 4
+	               }
+	            }
+	         },
+	         { insertOne :
+	            {
+	               "document" :
+	               {
+	                  "_id" : 5, "char" : "Taeln", "class" : "fighter", "lvl" : 3
+	               }
+	            }
+	         },
+	         { updateOne :
+	            {
+	               "filter" : { "char" : "Eldon" },
+	               "update" : { $set : { "status" : "Critical Injury" } }
+	            }
+	         },
+	         { deleteOne :
+	            { "filter" : { "char" : "Brisbane"} }
+	         },
+	         { replaceOne :
+	            {
+	               "filter" : { "char" : "Meldane" },
+	               "replacement" : { "char" : "Tanys", "class" : "oracle", "lvl" : 4 }
+	            }
+	         }
+	      ]
+	   );
+	}
+	catch (e) {
+	   print(e);
+	}
+	```
+
+- Aggregation Pipeline
+
+	ใช้ `db.collection.aggregate()` ตัวอย่าง
+	
+	![Aggregation Pipeline](https://github.com/somprasongd/mymemo/blob/master/Databases/MongoDB/resources/images/aggregation-pipeline.png)
