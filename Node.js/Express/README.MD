@@ -46,8 +46,13 @@ repo: [https://www.npmjs.com/package/express](https://www.npmjs.com/package/expr
 	- `res.set(field, value);` ไว้กำหนด HTTP Response Header
 	- `res.redirect(status, url);` redirect ไปยัง URL ที่กำหนด
 	- `res.send(body);` หรือ `res.send(status, body);` ไว้ส่งผลลัพท์กลับไป ซึ่ง content-type จะเปลี่ยนไปตาม body ที่ส่งไป
+	- `res.sendFile(path [, options] [, fn])` Send a file as an octet stream.
+	- `res.sendStatus(statusCode)` Set the response status code and send its string representation as the response body.
 	- `res.json(body);` หรือ `res.json(status, body);` ไว้ส่งผลลัพท์กลับไปในรูปแบบ json
+	- `res.jsonp(body);` หรือ `res.jsonp(status, body);` ไว้ส่งผลลัพท์กลับไปในรูปแบบ json
 	- `res.render(view, [local], callback);` ใช้ในการ render view แล้วส่งเป็น HTML Response กลับไป
+	- `res.download(path [, filename] [, fn])` 	Prompt a file to be downloaded.
+	- `res.end()` End the response process.
 
 
 #### HTML Template Engine ####
@@ -181,3 +186,179 @@ express สามารถสร้าง middleware เพื่อให้ท
 	});
 
 กรณีที่เกิดข้อผิดพลาดขึ้น เราจะไม่เรียก next(); เพื่อให้ทำงาน middleware ถัดไป ใช้ `res.render('error_page.hbs');` แทนประมาณนี้
+
+#### Routing ####
+
+**Basic routing**
+
+ใช้ `app.METHOD(PATH, HANDLER)` ซึ่ง METHOD คือ HTTP request method (lowercase) มีตัวอย่างการใช้งานดังนี้
+
+```javascript
+
+// Respond with Hello World! on the homepage:
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+})
+
+// Respond to POST request on the root route (/), the application’s home page:
+app.post('/', function (req, res) {
+  res.send('Got a POST request')
+})
+
+// Respond to a PUT request to the /user route:
+app.put('/user', function (req, res) {
+  res.send('Got a PUT request at /user')
+})
+
+// Respond to a DELETE request to the /user route:
+app.delete('/user', function (req, res) {
+  res.send('Got a DELETE request at /user')
+})
+
+// There is a special routing method, app.all(), which is not derived from any HTTP method.
+app.all('/secret', function (req, res, next) {
+  console.log('Accessing the secret section ...')
+  next() // pass control to the next handler
+})
+```	
+
+**Route paths**
+
+Route paths เป็นการตำแหน่งว่าแต่ละ request จะให้ทำอะไร ซึ่งสามารถเป็นได้ทั้ง strings, string patterns, หรือ regular expressions (เครื่องหมาย ?, +, *, และ () เป็น subsets ของ regular expression counterparts. ส่วน hyphen (-) และ dot (.) จะถูกแปรเป็น string path)
+
+```javascript
+
+// This route path will match requests to the root route, /.
+app.get('/', function (req, res) {
+  res.send('root')
+})
+
+// This route path will match requests to /about.
+app.get('/about', function (req, res) {
+  res.send('about')
+})
+
+// This route path will match requests to /random.text.
+app.get('/random.text', function (req, res) {
+  res.send('random.text')
+})
+
+// Here are some examples of route paths based on string patterns.
+
+// This route path will match acd and abcd.
+app.get('/ab?cd', function (req, res) {
+  res.send('ab?cd')
+})
+
+// This route path will match abcd, abbcd, abbbcd, and so on.
+app.get('/ab+cd', function (req, res) {
+  res.send('ab+cd')
+})
+// This route path will match abcd, abxcd, abRANDOMcd, ab123cd, and so on.
+app.get('/ab*cd', function (req, res) {
+  res.send('ab*cd')
+})
+
+// This route path will match /abe and /abcde.
+app.get('/ab(cd)?e', function (req, res) {
+  res.send('ab(cd)?e')
+})
+
+// Examples of route paths based on regular expressions:
+
+// This route path will match anything with an “a” in the route name.
+app.get(/a/, function (req, res) {
+  res.send('/a/')
+})
+
+// This route path will match butterfly and dragonfly, but not butterflyman, dragonflyman, and so on.
+app.get(/.*fly$/, function (req, res) {
+  res.send('/.*fly$/')
+})
+```	
+
+**Route parameters**
+
+เราสามารถส่ง parameter ไปกับ path ที่เรียกไปได้ โดยใช้ : และเรียกใช้งานผ่าน req.param
+
+	Route path: /users/:userId/books/:bookId
+	Request URL: http://localhost:3000/users/34/books/8989
+	req.params: { "userId": "34", "bookId": "8989" }
+
+จากตัวอย่างข้างบนสามารถเขียนโค้ดได้
+
+```javascript
+
+app.get('/users/:userId/books/:bookId', function (req, res) {
+  res.send(req.params)
+})
+```
+
+**app.route()**
+
+กรณีที่มี path เดียวกัน และต้องการทำงานหลาย method แต่ไม่ใช่ทุก method (`app.all()`) จะใช้ app.route() สร้าง chain ต่อไปเรื่อยๆ เช่น 
+
+```javascript
+
+app.route('/book')
+  .get(function (req, res) {
+    res.send('Get a random book')
+  })
+  .post(function (req, res) {
+    res.send('Add a book')
+  })
+  .put(function (req, res) {
+    res.send('Update the book')
+  })
+```
+
+**express.Router**
+
+เนื่องจาก Node.js สามารถสร้างโปรแกรมแบบ modular ได้ ดังนั้นเราสามารถสร้างไฟล์แยกออกไปใช้ router จัดการกับ method, path ต่างๆ แล้วใช้ middleware โหลดเข้ามา
+
+- สร้างไฟล์ birds.js ไว้ใน /app
+
+```javascript
+var express = require('express')
+var router = express.Router()
+
+// middleware that is specific to this router
+router.use(function timeLog (req, res, next) {
+  console.log('Time: ', Date.now())
+  next()
+})
+// define the home page route
+router.get('/', function (req, res) {
+  res.send('Birds home page')
+})
+// define the about route
+router.get('/about', function (req, res) {
+  res.send('About birds')
+})
+
+module.exports = router
+```
+
+- โหลดไฟล์ birds.js เข้ามาใน app.js
+
+```javascript
+var express = require('express')
+var router = express.Router()
+
+// middleware that is specific to this router
+var birds = require('./birds')
+
+// ...
+
+app.use('/birds', birds)
+```
+
+#### Express application generator ####
+
+เราสามารถใช้ `express-generator` package สร้าง app โดยใช้ `express` พร้อมโมดูลหลักๆ ที่จำเป็นต้องใช้งานมาให้เรียบร้อย มีขั้นตอนดังนี้
+
+1. install package: `$ npm install express-generator -g` 
+2. สร้าง app `$ express myapp`ซึ่งมี default view engine คือ jade ถ้าต้องการเปลี่ยน view engine สามารถใช้ option -e หรือ --ejs, --hbs, --pug
+3. `$ cd myapp`
+4. ติดตั้งโมดูล `$ npm install`
+5. รันโปรแกรม OS X `$ DEBUG=myapp:* npm start` ส่วน Windows `$ set DEBUG=myapp:* & npm start`
