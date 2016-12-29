@@ -158,3 +158,5 @@ var person = JSON.parse(personStr);
 - Security and Authentication โดยใช้ [JWT](./JWT)
 - แนะนำ package [validator](https://www.npmjs.com/package/validator) ซึ่ง  library สำหรับ string validators และ sanitizers เอามาใช้ร่วมกับการสร้าง schema ของ mongoose ได้
 - ใช้ package [lodash](https://www.npmjs.com/package/lodash) `_.pick(object, [paths])` ช่วยในการสร้าง object ใหม่ โดยการเลือก field ออกมาจาก object เดิม เช่น `var body = _.pick(req.body, ['email', 'password']);`
+- ใช้ package [moment](http://momentjs.com/docs/) จัดการเรื่อง date format
+- ตัวอย่างการใช้ [socket.io](https://github.com/somprasongd/node-chat-app)
