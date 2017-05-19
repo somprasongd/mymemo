@@ -1,6 +1,6 @@
 # Node.js #
 
-### ทบทวนเนื่อหา JavaScript ###
+### ทบทวนเนื้อหา JavaScript ###
 [JavaScript](../JavaScript/01-JavaScript)
 
 ### ติดตั้ง Node.js ###
