@@ -1,5 +1,8 @@
 # Node.js #
 
+### ทบทวนเนื่อหา JavaScript ###
+[JavaScript](../JavaScript/01-JavaScript)
+
 ### ติดตั้ง Node.js ###
 
 1. Install Node.js ดาวน์โหลด [Node.js v6.9.2 LTS](https://nodejs.org/en/)
