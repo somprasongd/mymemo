@@ -2,15 +2,15 @@
 
 หลังจากเริ่มศึกษาหลายภาษา หลายเทคโนโลยี เสร็จแล้วได้ใช้บ้าง ไม่ได้ใช้บ้าง หรือนานๆ ทีใช้บ้าง พอกลับมาใช้ใหม่ก็ต้องกลับมาเริ่มศึกษาใหม่อีก งั้นเริ่มจดบันทึกเอาไว้แล้ว จะได้กลับมาต่อถูก
 
-- [Java 8] (./Java)
+- [Java 8](./Java)
   
   เรื่องแรกเอา Java 8 เลยแล้วกัน ห่างหายจากการเขียน Java ไปหลายเดือนเริ่มศึกษา Java 8 ใหม่เลยแล้วกัน
   
-- [Netbeans Platform] (./Netbeans Platform)
+- [Netbeans Platform](./Netbeans Platform)
   
   เกี่ยวกับการ config และการพัฒนา Application โดยใช้ Netbeans Platform
 
   
-- [JavaScript] (./JavaScript)
+- [JavaScript](./JavaScript)
   
   ปูพื้นฐาน JavaScript, ES6 ที่น่าใช้, การใช้งานในส่วนของ front-end และ back-end
