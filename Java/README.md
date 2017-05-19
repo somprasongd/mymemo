@@ -4,6 +4,20 @@
 
 	ดาวน์โหลด JDK [http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html "Download JDK 8") 
 
+- ตั้งค่า Windows 10 Environtment
+	
+	- JAVA_HOME : C:\Program Files\Java\jdk1.8.0_112
+	- JDK_HOME  : %JAVA_HOME%
+	- JRE_HOME  : %JAVA_HOME%\jre
+	- CLASSPATH : .;%JAVA_HOME%\lib;%JAVA_HOME%\jre\lib
+	- PATH      : your-unique-entries;%JAVA_HOME%\bin (make sure that the longish your-unique-entries does not contain any other references to another Java installation folder.
+	[There is a blogpost explaining the rationale behind all these environment variables.](http://gedankenverlust.blogspot.de/2012/05/java-environment-variables-definitive.html)
+	
+	Optional recommendations
+
+	- Add an user environment variable JAVA_TOOL_OPTIONS with value -Dfile.encoding="UTF-8". This ensures that Java (and tools such as Maven) will run with a Charset.defaultCharset() of UTF-8 (instead of the default Windows-1252). This has saved a lot of headaches when wirking with my own code and that of others, which unfortunately often assume the (sane) default encoding UTF-8.
+	- When JDK is installed, it adds to the system environment variable Path an entry C:\ProgramData\Oracle\Java\javapath;. I anecdotally noticed that the links in that directory didn't get updated during an JDK installation update. So it's best to remove C:\ProgramData\Oracle\Java\javapath; from the Path system environment variable in order to have a consistent environment.
+
 - ติดตั้ง Netbeans IDE
 	
 	1. ดาวน์โหลด Netbeans [https://netbeans.org/](https://netbeans.org/)
