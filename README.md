@@ -9,3 +9,8 @@
 - [Netbeans Platform] (./Netbeans Platform)
   
   เกี่ยวกับการ config และการพัฒนา Application โดยใช้ Netbeans Platform
+
+  
+- [JavaScript] (./JavaScript)
+  
+  ปูพื้นฐาน JavaScript, ES6 ที่น่าใช้, การใช้งานในส่วนของ front-end และ back-end
