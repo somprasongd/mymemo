@@ -803,6 +803,7 @@ console.log(foo());
 
 ```
 **8. ES6**
+**8.0 Automatic semicolon insertion** ภาษา JavaScript ยังต้องใส่ semicolon แต่ใน ES6 ถ้าไม่ใส่มันจะใส่ให้อัตโนมัติ
 **8.1 การประกาศตัวแปรด้วย let**
   - ใช้เหมือนการประกาศตัวแปรด้วยว่า แต่มีข้อแตกต่างดังนี้
   1. var เป็น function scope แต่ let เป็น block ({}) scope ตัวอย่าง
