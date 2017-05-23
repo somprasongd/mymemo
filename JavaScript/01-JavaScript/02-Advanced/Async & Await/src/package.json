@@ -1,0 +1,15 @@
+{
+  "name": "asyncawait",
+  "version": "1.0.0",
+  "description": "Example async/await code",
+  "main": "01-asyncCode-converted.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Somprasong Damyos",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "node-fetch": "^1.6.3"
+  }
+}
