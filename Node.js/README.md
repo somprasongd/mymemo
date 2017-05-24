@@ -1,23 +1,26 @@
 # Node.js #
 
+Last Updated: 23/05/2017
+
 ### ทบทวนเนื้อหา JavaScript ###
 [JavaScript](../JavaScript/01-JavaScript)
 
 ### ติดตั้ง Node.js ###
 
-1. Install Node.js ดาวน์โหลด [Node.js v6.9.2 LTS](https://nodejs.org/en/)
+1. Install Node.js ดาวน์โหลด ณ ตอนนี้ใช้ [Node.js v7.10.0](https://nodejs.org/en/)
 2. เปิด CMD/Terminal ทดสอบรันคำสั่ง `node -v` และ `npm -v`
 
 ### Text Editor ###
 - [ATOM](https://atom.io/)
-- [Vistual Studio Code](https://code.visualstudio.com/)
+- [Vistual Studio Code](https://code.visualstudio.com/) ใช้ตัวนี้
 - [Netbeans](https://netbeans.org/)
 
 ### Node.js คืออะไร ###
 
 Node.js คือ JavaScript runtime ที่สร้างมาจาก Chrome's V8 JavaScript engine โดยหัวใจสำคัญคือการใช้ event-driven กับ non-blocking I/O
 
-มี npm (Node Package Manager) ไว้ติดตั้ง module ต่างๆ ใน Node.js package ecosystem มาใช้งานได้
+- มี npm (Node Package Manager) ไว้ติดตั้ง module ต่างๆ ใน Node.js package ecosystem มาใช้งานได้
+- เปรียบเทียบ Object ใน Google Chrome กับ Node.js
 
 Object | GG Chrome | Node.js
 ------------ | ------------ | -------------
@@ -25,46 +28,56 @@ Global Object | window | global
 DOM Object | document | ไม่มี
 Process Object | ไม่มี | process
 
-#### การทำงานแบบ Non-Blocking I/O ####
-![Blocking V/S Non-Blocking](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/non-blockin-io.PNG)
+#### REPL (Read-Evel-Print-Loop) ####
+- Node.js สามารถรันแบบ REPL โหมดได้ คือ มันไม่ต้อง complie โค้ด สามารถรันได้เลย
+- เข้าโหมด REPL โดยพิมพ์ `$ node`
+- REPL
+  - R - read คือ รับ input จาก keyboard
+  - E - eval คือ สามารถประมวลผลโค้ดที่รับมาได้ทันที
+  - P - print คือ แสดงผลลัพธ์ออกมาได่เลย
+  - L - Loop คือ เริ่มกลับไปทำงาน 3 ขั้นตอนข้างบนใหม่ จนกว่าจะจบการทำงาน
+- ตัวอย่าง
+```bash
+$ node
+> 10 + 30
+40
+> 50 * (10 - 3) / 3
+100
+> a = 120
+120
+> b = 200
+200
+> c = 300
+300
+> a + b + c
+620
+> total = _
+620
+> console.log(total)
+620
+undefined
+>
+```
 
-ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
 
 #### การทำงานของ Call Stack & Event Loop ####
-![eventloop 1](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/event_loop_01.gif)
+![eventloop 1](./resources/images/event_loop_01.gif)
 
-![eventloop 1](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/event_loop_02.gif)
+![eventloop 1](./resources/images/event_loop_02.gif)
 
-![eventloop 1](https://github.com/somprasongd/mymemo/blob/master/Node.js/resources/images/event_loop_03.gif)
+![eventloop 1](./resources/images/event_loop_03.gif)
 
 ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
 
-#### การทำงานของ Callback Function ####
-
-คือส่งฟังก์ชันไปในฟังก์ชันที่เรียกใช้งาน เพื่อเมื่อมันทำงานเสร็จแล้วให้เรียกฟังก์ชันที่ส่งเข้าไปให้ทำงานต่อ
-
-```javascript
-var getUser = (id, callback) => {
-    var user = {
-        id: id,
-        name: 'Somprasong'
-    };
-
-    setTimeout(() => {
-        callback(user);
-    }, 2000);
-}
-
-getUser(123, (userObj) => {
-    console.log(userObj);
-});
-
-/* Result wait for 2 sec
-Object {id: 123, name: "Somprasong"}*/
-```
-[เนื้อหาเพิ่มเติม](../JavaScript/01-JavaScript/02-Advanced/Callback%20Function)
-    
-**หมายเหตุ** การใช้ arrow function เช่น `var myFunc = () => {};` ไม่ควรใช้เมื่อต้องการใช้ `this` และ `arguments` หรือใช้สร้าง function ใน object
+#### การทำงานแบบ Non-Blocking I/O ####
+- มีการทำงานแบบ Asynchronous Task คือไม่ต้องรอทำงานทีละบรรทัด 
+- ภาพตัวอย่างเปรียบเทียบการทำงานแบบ synchronouse Vs. Asynchronous
+![Blocking V/S Non-Blocking](./resources/images/non-blockin-io.PNG)
+ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
+- วิธีการเขียนโค้ดแบบ Asynchronous ทำได้ดังนี้
+1.  [Callback Function](../JavaScript/01-JavaScript/02-Advanced/Callback%20Function) คือเมื่อทำงานเสร็จแล้วให้เรียกฟังก์ชัน callback ให้ทำงานต่อ จัดการไม่ดีอาจมีปัญหาเรื่อง [Callback Hell](http://callbackhell.com/)
+2.  [Promise](../JavaScript/01-JavaScript/02-Advanced/Promise) ES2015 เพิ่ม Promise มาดักจับการทำงานถ้าสำเร็จให้ทำอะไร ไม่สำเร็จให้ทำอะไร
+3.  [Async/Await](../JavaScript/01-JavaScript/02-Advanced/Async%20%26%20Await) ES2017 เพิ่ม async/await มาใช้ร่วมกับ Promise เพื่อหยุดรอให้ Promise ทำงานให้เสร็จ (ทำให้ async ดูเหมือน sync)
 
 #### Node Module ####
 
@@ -72,19 +85,25 @@ Object {id: 123, name: "Somprasong"}*/
 
 โดยจะมี module อยู่ 4 ประเภท ดังนี้
 
-- Core Module ใช้ `require('module name');` จะเป็น module ที่มีมาใน Node.js เลย ดูว่ามีอะไรให้ใช้บ้างจาก [Doc](https://nodejs.org/api/)
-
+1. **Core Module** ใช้ `require('module name');` จะเป็น module ที่มีมาใน Node.js เลย ดูว่ามีอะไรให้ใช้บ้างจาก [Doc](https://nodejs.org/api/)
     ```javascript
 	const fs = require('fs');
 
 	fs.appendFile('greetings.txt', 'Hello World!');
     ```
+    [ตัวอย่างใช้โมดูล fs](./Core-Modules/File-System
+    )
     
-- File Module เป็น module ที่่สร้างขึ้นมาเองเอง ใช้ `require('./notes');` ต้องระบุตำแหน่งของไฟล์ (ถ้าไม่ใส่นามสกุลไฟล์ require จะไปถ้าที่ .js ให้เอง) โดยไฟล์ notes.js ต้องมี module.exports หรือ exports ด้วย
+2. **File Module** เป็น module ที่่สร้างขึ้นมาเองเอง ใช้ `require('./notes');` ต้องระบุตำแหน่งของไฟล์ (ถ้าไม่ใส่นามสกุลไฟล์ `require()` จะไปถ้าที่ .js ให้เอง) โดยไฟล์ notes.js ต้องมี `module.exports` หรือ `exports` ด้วย
 
-- Folder Module จะระบุ path ไปยังโฟลเดอร์ที่มีไฟล์ package.json เช่น `var say = require('./module');`
+3. **Folder Module** จะระบุ path ไปยังโฟลเดอร์ที่มีไฟล์ package.json เช่น `var say = require('./module');`
 
-- Third-party Module เป็น module ที่ติดตั้งผ่าน npm และการ require ใช้ `require('[module name]');` ระบุชื่อไปเลย เหมือน core module
+4. **Third-party Module** เป็น module ที่ติดตั้งผ่าน npm โดยใช้ `npm install [module name] [options]` และเรียกใช้งานโดย `require('[module name]');` ระบุชื่อไปเลย เหมือน core module
+    ```javascript
+	const gulp = require('gulp'); // ต้อง npm install gulp --save ก่อน
+
+	gulp.task('default', () => console.log('Hello Gulp Task!'));
+    ```
 
 #### การสร้าง module (ต้องกลับมาอัพเดทอีกที เผื่อเข้าใจผิดอยู่) ####
 
@@ -100,7 +119,7 @@ Object {id: 123, name: "Somprasong"}*/
 #### NPM ####
 
 - เริ่มต้นใช้คำสั่ง `npm init` เพื่อสร้างไฟล์ package.json
-- ต้องติดตั้ง module ที่จะใช้งานจาก npm ใช้คำสั่ง `npm install [module name] --save` โดย --save คือให้บันทึกลงในไฟล์ package.json ด้วย แต่ถ้าต้องการติดตั้งแบบ global ใช้ -g แทน
+- ต้องติดตั้ง module ที่จะใช้งานจาก npm ใช้คำสั่ง `npm install [module name] --save` โดย `--save` คือบอกว่าใช้เฉพาะโปรเจคนี้ และสั่งให้บันทึกลงในไฟล์ package.json ด้วย แต่ถ้าต้องการติดตั้งแบบ global คือต้องการใช้ทุกโปรเจค ให้เปลี่ยนไปใช้ `-g` แทน
 - การระบุ version ทำได้โดย `npm install <module_name>@4.2.3` ซึ่งเลขเวอร์ชันจะเป็นแบบ major.minor.patch
 - การอัพเดท ใช้ `npm update <module_name>` สามารถใส่ --save หรือ -g ได้
 - การลบ ใช้ `npm uninstall <module_name>` สามารถใส่ --save หรือ -g ได้
@@ -117,7 +136,7 @@ Object {id: 123, name: "Somprasong"}*/
 
 - เริ่มจาก `npm install nodemon -g`
 - เวลารันไฟล์เปลี่ยนมาเป็น `nodemon app.js` แทน
-- การ shutdown nodemon ใช้ Ctrl + C
+- การ shutdown nodemon ใช้ `Ctrl + C`
 
 #### การใช้งานกับ JSON ####
 
@@ -134,14 +153,13 @@ var person = JSON.parse(personStr);
 ```
 
 #### Config Environment ####
+- การกำหนดค่า Environemnt
+  - Windows
+	- ใช้คำสั่ง $ set KEY=VALUE เช่น `$ set NODE_ENV=production`
+  - OS X
+	- ใช้คำสั่ง $ env KEY=VALUE เช่น `$ env NODE_ENV=production`
 
-- Windows
-	- ใช้คำสั่ง $ set xxx=yyy เช่น `$ set NODE_ENV=production`
-
-- OS X
-	- ใช้คำสั่ง $ env xxx=yyy เช่น `$ env NODE_ENV=production`
-
-- วิธีการเรียกใช้งานในโค้ด โดยผ่าน object ที่ชื่่อ process.env เช่น `if(process.env.NODE_ENV === 'production')`
+- วิธีการเรียกใช้งานในโค้ด โดยผ่าน object ที่ชื่่อ `process.env` เช่น `if(process.env.NODE_ENV === 'production')`
 
 #### Debuging ####
 

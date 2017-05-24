@@ -9,16 +9,19 @@ async function fetchFromGitHub(endpoint){
 }
 
 async function showUserAndRepos(handle) {
+    console.time('sequeantially');
     const user = await fetchFromGitHub(`/users/${handle}`);
     const repos = await fetchFromGitHub(`/users/${handle}/repos`);
 
     console.log(user.name);
     console.log(`${repos.length} repos`);
+    console.timeEnd('sequeantially');
 }
 
 showUserAndRepos('somprasongd');
 
-/* Wait 5 sec
+/*
 Somprasong Damyos
 5 repos
+sequeantially: 2053.222ms
 */

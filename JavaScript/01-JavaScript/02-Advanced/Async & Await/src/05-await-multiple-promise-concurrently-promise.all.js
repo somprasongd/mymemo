@@ -9,6 +9,7 @@ async function fetchFromGitHub(endpoint){
 }
 
 async function showUserAndRepos(handle) {
+    console.time('promise.all');
     const [user, repos] = await Promise.all([
         fetchFromGitHub(`/users/${handle}`),
         fetchFromGitHub(`/users/${handle}/repos`)
@@ -16,11 +17,14 @@ async function showUserAndRepos(handle) {
 
     console.log(user.name);
     console.log(`${repos.length} repos`);
+    
+    console.timeEnd('promise.all');
 }
 
 showUserAndRepos('somprasongd');
 
-/* Wait 3 sec
+/* 
 Somprasong Damyos
 5 repos
+promise.all: 1235.692ms
 */

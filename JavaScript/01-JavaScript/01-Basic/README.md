@@ -1,32 +1,46 @@
-**Javascript Basic**
+# Javascript Basic #
+Last Updated: 23/05/2017
 
-**1. Basic**
+## 1. Basic ##
 
-**1.1 Comment**
+### 1.1 Comment ###
 
-  - **คือ** ข้อความที่ใช้อธิบายเนื้อหาในซอร์สโค้ด ซึ่งมันจะไม่ถูก javascript engine อ่าน และประมวลผล
-  - **การใช้งาน** ใช้เครื่องหมาย `//` นำหน้าประโยคที่ต้องการ comment แต่ต้องเป็นบรรทัดเดียวกันเท่านั้น แต่ถ้าต้องการ comment หลายบรรทัดต้องใช้ `/* ... */` มาครอบไว้แทน
-  - **ตัวอย่าง** 
-
-```javascript
-  var x = 1; // This is an example comment.
-
-  /* This is
-  an example
-  comment */
-  var y = 2;
-```
-
-**1.2 console.log()**
-
-  - `console.log()` จะเป็น function ที่ใช้แสดงข้อความออกทางหน้า console ใช้ประโยชน์ในแง่ของการ dubug
-  - **ตัวอย่าง** 
+- **คือ** ข้อความที่ใช้อธิบายเนื้อหาในซอร์สโค้ด ซึ่งมันจะไม่ถูก javascript engine อ่าน และประมวลผล
+- **การใช้งาน** ใช้เครื่องหมาย `//` นำหน้าประโยคที่ต้องการ comment แต่ต้องเป็นบรรทัดเดียวกันเท่านั้น แต่ถ้าต้องการ comment หลายบรรทัดต้องใช้ `/* ... */` มาครอบไว้แทน
+- **ตัวอย่าง** 
 
 ```javascript
-  console.log('Hello world.'); // "Hello world."
+var x = 1; // This is an example comment.
+
+/* This is
+an example
+comment */
+var y = 2;
 ```
 
-**1.3 Variables**
+### 1.2 console.log() ###
+
+- `console.log()` จะเป็น function ที่ใช้แสดงข้อความออกทางหน้า console ใช้ประโยชน์ในแง่ของการ dubug
+```javascript
+console.log('Hello world.'); 
+
+// "Hello world."
+```
+
+- `console.warn()`, `console.error()` ใช้เหมือน  `console.log()` แค่ไว้แยกประเภทข้อความที่จะแสดงออกมา
+
+- จับเวลาการทำงานของโค้ดได้จาก `console.time('xxx')` กับ `console.timeEnd('xxx')`
+```javascript
+console.time('do-100-loops');
+for(var i = 0; i < 100; i ++){
+  // 
+}
+console.timeEnd('do-100-loops');
+
+// do-100-loops: 0.035888671875ms
+```
+
+### 1.3 Variables ###
   - Variables หรือตัวแปร มีไว้ใช้อ้างอิงตำแหน่งในหน่วยความจำที่เก็บข้อมูลเอาไว้
   - การประกาศตัวแปร จะใช้ keyword var นำหน้าชื่อตัวแปร ซึ่งชื่อตัวแปรจะต้องขึ้นต้นด้วยตัวอักษร (a-z) จะ upper/lower ก็ได้ หรือ $ หรือ _ แต่ best practice แนะนำให้ตั้งเป็น camelCase และให้ตั้งชื่อแบบที่ human readable
   - **ตัวอย่าง**
@@ -55,7 +69,7 @@ var myName = 'ball';
     ```
 [ Note ] : ES6 มีการประกาศตะวแปรแบบใหม่ใช้ `let` กับ `const` (หัวข้อที่ 8.1)
 
-**1.4 String** 
+### 1.4 String ###
   - เป็น data type ที่เก็บข้อความ โดยใช้ "" หรือ '' ครอบก็ได้ _(Best Practice ต้องตกลงในทีมว่าจะใช้แบบไหน)_
   - **ตัวอย่าง**
 ```javascript
@@ -100,7 +114,7 @@ ESCAPE CHARACTER | Description
    - String method: String ถึงเป็น primitive type ก็มี method มาให้ใช้งาน เช่น `toUpperCase();`, `trim();`, `indexOf()`, `lastIndexOf()`
    - ES6 Template Literals
 
-**1.5 Operators**
+### 1.5 Operators ###
   - ใน expressions (ประโยคที่จะถูกประมวลผลให้ได้เป็นค่าๆ หนึ่ง) 1 ตัว จะประกอยด้วย
     1. Operand (ตัวถูกดำเนินการ) ได้แก่ ข้อมูล ตัวแปร หรือค่าที่รีเทิร์นจากฟังก์ชัน
     2. Operator (ตัวดำเนินการ)
@@ -125,7 +139,7 @@ ESCAPE CHARACTER | Description
     - **Increment (++)** เอาไว้เพิ่มค่าไป 1 มี syntax คือ `x++` หรือ `++x`
     - **Decrement (--)** เอาไว้ลดค่าลง 1 มี syntax คือ `x--` หรือ `--x`
 
-**2. Object**
+## 2. Object ##
   - ทุกอย่างที่ไม่ใช้ primitive (string, number, boolean, null, undefined, symbol) ถือว่าเป็น object ทั้งหมด 
   - Object จะเก็บเป็น key/value อยู่ภายใต้ Object Literal Natation `{}` ซึ่งจะมี properties (variables), methods (functions) หรือ object ก็ได้
   - การเข้าถึง Object ทำได้โดยใช้ dot notation (.) หรือ bracket notation ([])
@@ -158,7 +172,7 @@ person3['gender'] = 'male';
 person3['age'] = 32;
 ```
 
-**2.1 Object Constructor Function**
+### 2.1 Object Constructor Function ###
   - ถ้าต้องการสร้าง object ที่เหมือนๆ กัน ทีมี properties และ methods เหมือนกัน เราสามารถสร้างเป็น constructor โดยมันจะเสมือนพิมพ์เขียว เอาไว้สร้าง object ขึ้นมาโดยเฉพาะ
   - Syntax: `function Object() {};`
   - เรียกใช้โดยใช้ `new`
@@ -178,7 +192,7 @@ var person2 = new Person('john', 'male', 33);
 var person3 = new Person('jane', 'female', 23);
 ```
 
-**2.2 Object Prototypes**
+### 2.2 Object Prototypes ###
   - ปกติเมื่อสร้าง object จาก constructor ด้วย new แล้ว object นั้นๆ จะมี prototype มาด้วย 
   - ซึ่ง prototype มันจะคล้ายๆ พิมพ์เขียวที่เอาไว้ให้ object อื่นๆ สามารถเข้าถึง properties กับ methods ของมันได้ 
   - prototype ก็คือ object
@@ -204,7 +218,7 @@ console.log(Object.getPrototypeOf(redCar) === Car.prototype); // true
 // ถ้าต้องการตรวจสอบว่า object นั้นถูกจากมาจาก constructor function นั้น หรือไม่ ใช้ instanceOf
 console.log(redCar instanceOf Car); // true
 ```
-**3. Array**
+## 3. Array ##
   - Array เป็นข้อมูลแบบ object ชนิดหนึ่ง แต่มันใช้สำหรับเก็บค่าหลายๆ ค่า (ซ้ำกันได้) เป็นชุดข้อมูล ซึ่งจะเก็บอยู่ใน `[]` และค่าแต่ละตัวแยกด้วย `,`
   - **ตัวอย่าง**
 
@@ -231,7 +245,7 @@ var fishTank = {
 fishTank.material; //'glass'
 fishTank.gallons; // 10
 ```
-**3.1 Array Method**
+### 3.1 Array Method ###
   
   [ Note ] method รูปแบบ [].methods(); แต่ถ้าไม่มี () จะเป็น properties เช่น [].length;
   - `pop();` => ดึงค่าตัวสุดท้ายออกจาก array
@@ -292,7 +306,7 @@ allDogs.slice(-3, -1); // ['weiner dog', 'corgie']
 allDogs.slice(3); // ['bernese mountain dog', 'terrier', 'weiner dog', 'corgie', 'pomeranian']
 ```
 
-**4. Functions**
+## 4. Functions ##
   - Functions คือโปรแกรมย่อย ที่รวมเอาคำสั่งของโปรแกรม (statements) ที่ทำงานซ้ำๆ กัน มาอยู่จุดเดียวกัน แล้วเรียกใช้งานผ่านฟังก์ชันทีเดียว สามารถ resue ได้ ไม่ต้องเขียนใหม่ ทุกๆ ครั้งที่จะใช้งาน
   - การประกาศฟังก์ชัน: `function functionaName(param1, param2, ..., paramN) { return [value]; // optional}`
   - ไม่มี semicolon
@@ -307,7 +321,7 @@ var result = calculate(2, 10);
 console.log(result); // 20
 ```
 
-**4.1 Anonymous Functions**
+### 4.1 Anonymous Functions ###
   - คือการประกาศฟังก์ชันโดยตัดชื่อฟังก์ชันออก `function (param1, param2, ..., paramN) { return [value]; // optional}`
   - **ตัวอย่าง**
 ```javascript
@@ -324,7 +338,7 @@ calculate = 100;
 console.log(calculate); // 100
 ```
 
-**4.2 IIFE (Immediately Inviked Function Expressions)**
+### 4.2 IIFE (Immediately Inviked Function Expressions) ###
   - คือฟังก์ชันที่เรียกใช้งานทันที
   - โดยการใส่ () ต่อท้ายฟังก์ชัน เพื่อเรียกใช้งานฟังก์ชันทันที และใส่ (...) ครอบไว้ซึ่งคือการทำ Wrapped Function 
   - **ตัวอย่าง**
@@ -350,7 +364,7 @@ var greeting2 = (function(){
 console.log(greeting2); // "Hello, everyone!"
 ```
 
-**4.3 Scope**
+### 4.3 Scope ###
   - ใน javascript จะมองเห็นตัวแปรอยู่ 2 แบบ คือ
   1. Local Scope: ตัวแปรที่ประกาศอยู่ในฟังก์ชัน ถูกเข้าถึงได้เฉพาะในฟังก์ชันเท่านั้น
   2. Global Scope: ตัวแปรที่ประกาศอยู่นอกฟังก์ชัน ถูกมองเห็นได้จากทุกๆ ที่
@@ -371,7 +385,7 @@ checkScope(); // "private"
 console.log(scope); // "public"
 ```
 
-**4.4 Closure Function**
+### 4.4 Closure Function ###
   - คือการทำฟังก์ชันชันซ้อนฟังก์ชัน และมันจะจดจำว่าพื้นที่ได้ว่า ฟังก์ชันนั้นๆ เคยอยู่ภายใต้ฟังก์ชันหลักตัวใดมาก่อน เพื่อทำให้สามารถเข้าถึงตัสแปรที่ประกาศอยู่ในฟังก์ชันหลักได้ แม้ว่าฟังก์ชันหลักจะจบการทำงานไปแล้ว แต่ฟังก์ชันหลักจะไม่เห็นตัวแปรที่อยู่ในฟังก์ชันที่อยู่ภายใต้มันเลย
   - **ตัวอย่าง**
 ```javascript
@@ -393,7 +407,7 @@ function volume() {
 volume(); // 1000
 ```
 
-**4.5 Hoist**
+### 4.5 Hoist ###
   - คือการประกาศฟังก์ชัน และการประกาศตัวแปร แบบ `var` มันจะลอยขึ้นไปประกาศอยู่ข้างบนสุดของขอบเขต (scope) ของมัน ถ้าเป็นตัวแปรเมื่อย้ายไป จะไม่มีค่าเริ่มต้นกำหนดไป
   - การประกาศตัวแปรแบบ `var` จะเป็นแบบ function scope
   - การประกาศตัวแปรแบบ `let` กับ `const` จะเป็นแบบ block scope จะไม่ลอยไปอยู่ข้างบนสุด แต่ scope เริ่มจากจุดที่ประกาศใช้งาน จนถึงเส้นทางที่โปรแกรมทำงานเสร็จ เมื่อออกจาก block ไปแล้วตัวแปรก็จะตายลง
@@ -441,14 +455,14 @@ function myFunction() {
   console.log(value); // ReferanceError
 }
 ```
-**5. Loops & Conditionals**
+## 5. Loops & Conditionals ##
   - Loops  คือ การตรวจสอบเงื่อนไข ถ้าเป็น true จะทำงานใน code block โดยจะทำซ้ำจนกว่าเงื่อนไขจะเป็น false
   - Condition คือ ตัวตัวสินใจว่าจะทำงาน หรือข้ามการทำงานไป ขึ้นอยู่กับค่าของ expression นั้นๆ
   - ค่าจะเป็นเท็จเมื่อ `(false);, (0);, ('');, (null);, (undefined);, (NaN);` นอกนั้นจะเป็นจริง
   - `==` คือการเปรียบเทียบค่า ส่วน `===` เปรียบทั้งค่า และ type
   - กลับไปดู Logical Operators ในหัวข้อ 1.5
 
-**5.1 Control Statement**
+### 5.1 Control Statement ###
   - IF Statement => เอาไว้เลือกเส้นทางการทำงาน
     - IF => ถ้า expression เป็นจริงจะทำงานใน code block ถ้าไม่จะข้ามไป
     - ELSE => ใช้ร่วมกับ `if` ถ้าไม่ทำงานใน code block ของ if จะมาทำงานใน `else` แทน
@@ -489,7 +503,7 @@ function myFunction() {
           // code block;
       }
       ```
-**5.2 Loops**
+### 5.2 Loops ###
   - ประโยคคำสั่ง while
     - **Syntax:**
       ```javascript
@@ -660,7 +674,7 @@ function myFunction() {
        // "i: 0"
       ```
 
-**6. this, bind(), call(), apply()**
+## 6. this, bind(), call(), apply() ##
   - `this` คือ pointer ที่ชี้ไปยัง object ที่อยู่ในหน่วยความจำ ทำให้สามารถใช้ `this` เข้าถึง properties และ method ภายใน object นั้นๆ ได้ทั้งหมด แต่ `this` มันจะผูกไว้กับ object ตัวใดตัวหนึ่ง ในขณะที่โปรแกรมทำงานเท่านั้น
   - **ตัวอย่าง**
 ```javascript
@@ -721,7 +735,7 @@ count(); // Nan เนื่องจากไม่มีค่า x, y
       // หรือ
       add.bind(number, 5, 8)(); // 15   
       ```
-**7. Error & Exception Handeling**
+## 7. Error & Exception Handeling ##
   - เมื่อเกิด error ขึ้นมาที่บรรทัดใดก็ตาม โปรแกรมจะหยุดการทำงานทันที แต่มีวิธีจัดการกับ error นั้นๆ ได้โดยที่ยังให้โปรแกรมสามารถทำงานต่อได้ตามปกติ โดยการใช้ try ... catch
   - รูปแบบ
 ```javascript
@@ -802,9 +816,11 @@ console.log(foo());
 "This is try" */
 
 ```
-**8. ES6**
-**8.0 Automatic semicolon insertion** ภาษา JavaScript ยังต้องใส่ semicolon แต่ใน ES6 ถ้าไม่ใส่มันจะใส่ให้อัตโนมัติ
-**8.1 การประกาศตัวแปรด้วย let**
+## 8. ES6 ##
+### 8.0 Automatic semicolon insertion ### 
+- ภาษา JavaScript ยังต้องใส่ semicolon แต่ใน ES6 ถ้าไม่ใส่มันจะใส่ให้อัตโนมัติ
+
+### 8.1 การประกาศตัวแปรด้วย let ###
   - ใช้เหมือนการประกาศตัวแปรด้วยว่า แต่มีข้อแตกต่างดังนี้
   1. var เป็น function scope แต่ let เป็น block ({}) scope ตัวอย่าง
       ```javascript
@@ -852,11 +868,11 @@ console.log(foo());
   4. ดังนั้นจะอ้างถึงตัวแปร let ก่อนประกาศไม่ได้
   5. ประกาศชื่อตัวแปร let ซ้ำกันไม่ได้ ภายใน scope เดียวกัน ไม่สนใจว่าจะเป็นตัวแปรแบบ var/let/const แต่คนละ scope สามารถทำได้ เรีกยว่า TDZ (Temporal Dead Zone)
 
-**8.2 การประกาศตัวแปรด้วย const**
+### 8.2 การประกาศตัวแปรด้วย const ###
   - คือการประกาศตัวแปรเป็นค่าคงที่ คือต้องกำหนดค่าเริ่มต้นตั้งแต่ประกาศตัวแปรครั้งแรก และไม่สามารถแก้ไขค่าภายหลังได้ ส่วนอื่นก็จะเหมือน let ทุกประการ
   - ถึงจะการประกาศ object เป็นเป็นค่าคงที่ แต่ยังสามารถแก้ไขข้อมูลภายในของ object ได้ (แต่สามารถใช้ Object.freeze({}); เพื่อไม่ให้เปลี่ยนใส่ใน Object ได้ แต่ก็กันได้แค่ระดับชันเดียวเท่านั้น ถ้ามี object ข้างใน object ตัวนั้นก็ยังสามารถเปลี่ยนแปลงค่าข้างตัวมันได้อยู่)
 
-**8.3 Template String**
+### 8.3 Template String ###
   - เวลาสร้างข้อความจะใช้เครื่องหมาย back-ticks (ตัวอักษร grave accent `) ไม่ใช่ "" หรือ ''
   - สามารถแทรกตัวแปรลงไปในข้อความได้เลย โดยใช้ `${variable}`
   - สามารถแทรก expression ลงไปในข้อความได้เลย `${expression}`
@@ -875,7 +891,7 @@ console.log(msg);
 let a = 3.25, b = 10.5;
 console.log(`Price $${(a*b).toFixed(2)}`); // Price $34.13
 ```
-**8.4 Arrow Functions**
+### 8.4 Arrow Functions ###
  - ตัวคำว่า function ออกไปตอนประกาศฟังก์ชัน เพื่อลดโค้ดให้เหลือแค่ประกาศพารามิเตอร์ ตามด้วย => ต่อท้ายด้วย {}
 ```javascript
 // ES 5
@@ -922,7 +938,9 @@ debugLevel('Test'); // DEBUG: Test
    - this ในฟังก์ชันลูกศรไม่สามารถเปลี่ยนแปลงได้ แต่ยังใช้ call() apply() และ bind() เหมาะกับการเอามาสร้างเป็น callback function
    - ฟังก์ชันลูกศรไม่สามารถเอาไปใช้เป็น function constructor ได้ ก็คือใช้ new สร้างออฟเจ๊กต์ไม่ได้
 
-**8.5 Rest Parameters**
+[ Note ] ไม่ควรใช้เมื่อต้องการใช้ `this` และ `arguments` หรือใช้สร้าง function ใน object
+
+### 8.5 Rest Parameters ###
   - มันคือการประกาศพารามิเตอร์แค่ตัวเดียว แต่สามารถรับค่าอากิวเมนต์ได้หลายตัว และต้องวางมันไว้ต่อท้ายพารามิเตอร์ตัวอื่นๆ เท่านั้น
 ```javascript
 let iterateItem = (item, ...last) => {
@@ -944,7 +962,7 @@ iterateItem(1, 2, 3, 4, 5, 6);
 */
 
 ```
-**8.6 Spread Operator**
+### 8.6 Spread Operator ###
   - เอาไว้กระขายข้อมูลภายในของออฟเจ็กต์ที่วนซ้ำได้ เช่น Array String เป็นต้น
 ```javascript
 // Math.max() จะรับค่าอากิวเมนต์กี่ตัวก้ได้ แต่จะไม่รับ array
@@ -954,7 +972,7 @@ console.log(Math.max(...vals)); // 299
 // เหมือนกับการเขียน console.log(Math.max(vals[0], vals[1], vals[2], vals[3], vals[4], vals[5]));
 ```
 
-**8.7 Object: การใช้พร็อพเพอร์ตี้แบบย่อ**
+### 8.7 Object: การใช้พร็อพเพอร์ตี้แบบย่อ ###
   - โดยปกติใน javascript ข้อมูลในออฟเจ็กต์สามารถกำหนดค่าด้วยแปร ซึ่งชื่อตัวแปรสามารถซ้ำกับคีย์ได้ ดังนั้นใน ES6 สามารถเขียนให้กระชับขึ้นได้โดย ใช้แค่ชื่อคีย์เพียวตัวเดียว ตัดเครื่องหมาย : กับข้อมูลทิ้งไป
 ```javascript
 let color = 'red';

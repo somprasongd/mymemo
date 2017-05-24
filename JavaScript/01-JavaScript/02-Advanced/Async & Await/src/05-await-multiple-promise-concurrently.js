@@ -9,6 +9,7 @@ async function fetchFromGitHub(endpoint){
 }
 
 async function showUserAndRepos(handle) {
+    console.time('concurrently');
     const userPromise = fetchFromGitHub(`/users/${handle}`);
     const reposPromise = fetchFromGitHub(`/users/${handle}/repos`);
 
@@ -17,11 +18,13 @@ async function showUserAndRepos(handle) {
 
     console.log(user.name);
     console.log(`${repos.length} repos`);
+    console.timeEnd('concurrently');
 }
 
 showUserAndRepos('somprasongd');
 
-/* Wait 3 sec
+/*
 Somprasong Damyos
 5 repos
+concurrently: 1252.951ms
 */
