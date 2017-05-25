@@ -4,7 +4,12 @@ fs.readFile('./data.json', (err, data) => {
     console.log(data); // Show Buffer
 });
 
-// จะแสดงข้อความให้ใส่ utf-8 เพิ่มเข้าไป
+// ใช้ toString() มาแปลงจาก buffer เป็น String
+fs.readFile('./data.json', (err, data) => {
+    console.log(data.toString()); // show string
+});
+
+// หรือให้ใส่ utf-8 เพิ่มเข้าไป data ที่ได้ออกมาจะเป็น String
 fs.readFile('./data.json', 'utf-8', (err, data) => {
     console.log(data); // show string
 });

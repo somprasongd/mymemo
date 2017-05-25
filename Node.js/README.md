@@ -1,21 +1,21 @@
 # Node.js #
 
-Last Updated: 23/05/2017
+Last Updated: 25/05/2017
 
-### ทบทวนเนื้อหา JavaScript ###
+## ทบทวนเนื้อหา JavaScript ##
 [JavaScript](../JavaScript/01-JavaScript)
 
-### ติดตั้ง Node.js ###
+## ติดตั้ง Node.js ##
 
 1. Install Node.js ดาวน์โหลด ณ ตอนนี้ใช้ [Node.js v7.10.0](https://nodejs.org/en/)
 2. เปิด CMD/Terminal ทดสอบรันคำสั่ง `node -v` และ `npm -v`
 
-### Text Editor ###
+## Text Editor ##
 - [ATOM](https://atom.io/)
 - [Vistual Studio Code](https://code.visualstudio.com/) ใช้ตัวนี้
 - [Netbeans](https://netbeans.org/)
 
-### Node.js คืออะไร ###
+## Node.js คืออะไร ##
 
 Node.js คือ JavaScript runtime ที่สร้างมาจาก Chrome's V8 JavaScript engine โดยหัวใจสำคัญคือการใช้ event-driven กับ non-blocking I/O
 
@@ -28,7 +28,7 @@ Global Object | window | global
 DOM Object | document | ไม่มี
 Process Object | ไม่มี | process
 
-#### REPL (Read-Evel-Print-Loop) ####
+## REPL (Read-Evel-Print-Loop) ##
 - Node.js สามารถรันแบบ REPL โหมดได้ คือ มันไม่ต้อง complie โค้ด สามารถรันได้เลย
 - เข้าโหมด REPL โดยพิมพ์ `$ node`
 - REPL
@@ -60,7 +60,7 @@ undefined
 ```
 
 
-#### การทำงานของ Call Stack & Event Loop ####
+## การทำงานของ Call Stack & Event Loop ##
 ![eventloop 1](./resources/images/event_loop_01.gif)
 
 ![eventloop 1](./resources/images/event_loop_02.gif)
@@ -69,7 +69,7 @@ undefined
 
 ภาพจาก [The Complete Node.js Developer Course 2.0 | Udemy](https://www.udemy.com/the-complete-nodejs-developer-course-2/learn/v4/t/lecture/5525228)
 
-#### การทำงานแบบ Non-Blocking I/O ####
+## การทำงานแบบ Non-Blocking I/O ##
 - มีการทำงานแบบ Asynchronous Task คือไม่ต้องรอทำงานทีละบรรทัด 
 - ภาพตัวอย่างเปรียบเทียบการทำงานแบบ synchronouse Vs. Asynchronous
 ![Blocking V/S Non-Blocking](./resources/images/non-blockin-io.PNG)
@@ -79,7 +79,7 @@ undefined
 2.  [Promise](../JavaScript/01-JavaScript/02-Advanced/Promise) ES2015 เพิ่ม Promise มาดักจับการทำงานถ้าสำเร็จให้ทำอะไร ไม่สำเร็จให้ทำอะไร
 3.  [Async/Await](../JavaScript/01-JavaScript/02-Advanced/Async%20%26%20Await) ES2017 เพิ่ม async/await มาใช้ร่วมกับ Promise เพื่อหยุดรอให้ Promise ทำงานให้เสร็จ (ทำให้ async ดูเหมือน sync)
 
-#### Node Module ####
+## Node Module ##
 
 ใช้ require ในการเรียกใช้งาน module อื่น ในโค้ดของเรา เช่น `const fs = require('fs');`
 
@@ -91,8 +91,7 @@ undefined
 
 	fs.appendFile('greetings.txt', 'Hello World!');
     ```
-    [ตัวอย่างใช้โมดูล fs](./Core-Modules/File-System
-    )
+    [ตัวอย่างการใช้ Core Module](./Core-Modules)
     
 2. **File Module** เป็น module ที่่สร้างขึ้นมาเองเอง ใช้ `require('./notes');` ต้องระบุตำแหน่งของไฟล์ (ถ้าไม่ใส่นามสกุลไฟล์ `require()` จะไปถ้าที่ .js ให้เอง) โดยไฟล์ notes.js ต้องมี `module.exports` หรือ `exports` ด้วย
 
@@ -105,7 +104,7 @@ undefined
 	gulp.task('default', () => console.log('Hello Gulp Task!'));
     ```
 
-#### การสร้าง module (ต้องกลับมาอัพเดทอีกที เผื่อเข้าใจผิดอยู่) ####
+## การสร้าง module (ต้องกลับมาอัพเดทอีกที เผื่อเข้าใจผิดอยู่) ##
 
 ต้องสร้างไฟล์ xxx.js ขึ้นมา และทำการ export ส่วนที่ต้องการให้ใช้งานออกไป ซึ่งสามารถทำได้ 2 วิธี
 
@@ -113,10 +112,10 @@ undefined
 
 2. ใช้ `module.exports = {};` หรือ `module.exports.xxx = function(){};`
 
-ซึ่งเมื่อเราเรียกใช้ require('path'); ตัว function require(path); จะ `return module.exports;` ออกมาให้ และมีการสร้างตัวแปร `var exports = module.exports = {};`
+ซึ่งเมื่อเราเรียกใช้ `require('path/file-module');` ตัว `function require(path);` จะ `return module.exports;` ออกมาให้ และมีการสร้างตัวแปร `var exports = module.exports = {};`
 
 
-#### NPM ####
+## NPM ##
 
 - เริ่มต้นใช้คำสั่ง `npm init` เพื่อสร้างไฟล์ package.json
 - ต้องติดตั้ง module ที่จะใช้งานจาก npm ใช้คำสั่ง `npm install [module name] --save` โดย `--save` คือบอกว่าใช้เฉพาะโปรเจคนี้ และสั่งให้บันทึกลงในไฟล์ package.json ด้วย แต่ถ้าต้องการติดตั้งแบบ global คือต้องการใช้ทุกโปรเจค ให้เปลี่ยนไปใช้ `-g` แทน
@@ -130,7 +129,7 @@ undefined
 	- ระบุช่วง ^ (caret) จะอัพเดทส่วนที่ต่ำกว่า **“หลักซ้ายสุดที่ไม่ใช่ศูนย์”** เช่น `npm install express@"^1.2.3"` หมายถึง >=1.2.3 < 2.0.0 หรือ `npm install express@"^0.2.3"` หมายถึง >=0.2.3 < 0.3.0
 
 
-#### Restarting App with Nodemon ####
+## Restarting App with Nodemon ##
 
 ปกติเวลาแก้ไขโค้ดจะต้องรันใหม่ทุกครั้ง เช่น `node app.js` ซึ่งถ้าไม่อยากมานั่งรันไฟล์ใหม่ทุกครั้งที่มีการแก้ไขก็ใช้ module ที่ชื่อ nodemon มาช่วย
 
@@ -138,7 +137,7 @@ undefined
 - เวลารันไฟล์เปลี่ยนมาเป็น `nodemon app.js` แทน
 - การ shutdown nodemon ใช้ `Ctrl + C`
 
-#### การใช้งานกับ JSON ####
+## การใช้งานกับ JSON ##
 
 ```javascript
 // แปลงจาก Object เป็น JSON
@@ -152,7 +151,7 @@ var personStr = '{"name": "Somprasong", "age": 31}';
 var person = JSON.parse(personStr);
 ```
 
-#### Config Environment ####
+## Config Environment ##
 - การกำหนดค่า Environemnt
   - Windows
 	- ใช้คำสั่ง $ set KEY=VALUE เช่น `$ set NODE_ENV=production`
@@ -161,7 +160,11 @@ var person = JSON.parse(personStr);
 
 - วิธีการเรียกใช้งานในโค้ด โดยผ่าน object ที่ชื่่อ `process.env` เช่น `if(process.env.NODE_ENV === 'production')`
 
-#### Debuging ####
+## Global Objects ##
+- `__dirname` จะรีเทิร์น directory ปัจจุบันของไฟล์ที่เรียกใช้ ตัวอย่าง `console.log(__dirname);`
+- `__filename` จะรีเทิร์นตำแหน่งปัจจุบันของไฟล์ที่เรียกใช้ ตัวอย่าง `console.log(__filename);`
+
+## Debuging ##
 
 - ใช้คำสั่ง `node debug app.js`
 
@@ -175,7 +178,16 @@ var person = JSON.parse(personStr);
 
 - ถ้าอยากระบตำแหน่งที่ต้องการจะ debug ให้แก้ไขไฟล์ที่จะ debug โดยจะเริ่มที่บรรทัดไหน ใส่ `debugger;` แล้วรันคำสั่ง `node debug app.js` มันจะหยุดที่ statement แรก จากนั้นให้พิมพ์ c แล้ว Enter มันจะพาไปยังบรรทัดที่พิมพ์ `debugger;` ไว้
 
-#### อื่นๆ ####
+## Node Version Manager (nvm) for Windows ##
+- เนื่องจากบางครั้งเราอาจต้องการทดสอบโค้ดบน Node.js หลายๆ เวอร์ชัน สามารถใช้ nvm ช่วยในการสลับเวอร์ชันของ Node.js ที่จะรันได้
+- [nvm for Windows](https://github.com/coreybutler/nvm-windows)
+- วิธีใช้เบื้องต้น
+  - `nvm ls` เพื่อดูว่าติดตั้งเวอร์ชันอะไรไว้บ้าง โดยตัวที่กำลังใช้งานอยู่จะมี "*" อยู่ข้างหน้า
+  - `nvm install 6.10.2` ใช้สำหรับติดตั้ง Node.js เวอร์ชันที่ต้องการ
+  - `nvm use 6.10.2` ใช้สำหรับสลับไปใช้งานเวอร์ชัน 6.10.2
+  - ลองตรวจสอบด้วย `node -v`
+
+## อื่นๆ ##
 
 - การสร้าง Web Server โดยใช้ [Express](./Express)
 - การทดสอบระบบโดยใช้ [Mocha](./Mocha)

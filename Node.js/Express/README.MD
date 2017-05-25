@@ -2,9 +2,9 @@
 
 Last Updated: 23/05/2017
 
-**Website:** [http://expressjs.com/](http://expressjs.com/ "http://expressjs.com/")
+**Website:** [http://expressjs.com/](http://expressjs.com/)
 
-**repo:** [https://www.npmjs.com/package/express](https://www.npmjs.com/package/express "https://www.npmjs.com/package/express")
+**repo:** [https://www.npmjs.com/package/express](https://www.npmjs.com/package/express)
 
 **ความสามารถ:** เป็น Web Framework ตัวหนึ่ง ซึ่งมันสามารถทำเป็น frontend และ backend ได้
 
@@ -376,3 +376,9 @@ app.use('/birds', birds)
 3. `$ cd myapp`
 4. ติดตั้งโมดูล `$ npm install`
 5. รันโปรแกรม OS X `$ DEBUG=myapp:* npm start` ส่วน Windows `$ set DEBUG=myapp:* & npm start`
+
+## โมดูลที่แนะนำให้ใช้ร่วมกับ Express ในกทำ APIs Server ##
+- bodyParser
+- morgan
+- mongoose // ถ้าใช้ db เป็น mongodb
+- pg-promise // ถ้าใช้ db เป็น postgres
