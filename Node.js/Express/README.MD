@@ -1,6 +1,6 @@
 # Express #
 
-Last Updated: 23/05/2017
+Last Updated: 25/05/2017
 
 **Website:** [http://expressjs.com/](http://expressjs.com/)
 
@@ -15,8 +15,8 @@ $ npm install express --save
 ## ตัวอย่างการใช้งาน Express Framework ##
 
 ```javascript
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 	
 app.get('/', (req, res) => {
 	// res.send(); ถ้าส่งเป็น text/html/json express จะจัดการกำหนด content-type ให้เอง
@@ -24,8 +24,13 @@ app.get('/', (req, res) => {
 })
 
 // ระบุ port ของ web server 
-app.listen(3000);
-
+app.listen(3000, err => {
+	if(err){
+		console.log('Start server error:', err.message);
+	}else{
+		console.log('Server is runnig at http://localhost:3000');
+	}
+});
 ```
 
 ## Object ต่างๆ ##
@@ -45,7 +50,6 @@ app.listen(3000);
 	- `req.query` ไว้ดึงค่า query string ออกมาเป็น Object
 	- `req.param` ไว้ดึงค่า routing parameter ออกมาเป็น Object
 	- `req.body` ไว้ดึงค่า bogy message ออกมาเป็น Object ต้องใช้ bodyParser() ช่วย
-
 
 - Response Object
 	- `res.status(code);` ไว้กำหนด HTTP Status Code
@@ -77,10 +81,18 @@ app.listen(3000);
   - ให้สร้างไฟล์ template ไว้ที่ folder ชื่อ **"views"**
     - กรณีใช้ไฟล์ template เป็น .hbs 
 		```javascript
+		const hbs = require('hbs');
+		const path = require('path');
+		// view engine setup
+		app.set('views', path.join(__dirname, 'views')); // ชื่อเดียวกับที่สร้าง folder ไว้
 		app.set('view engine', 'hbs');
 		```
     - กรณีใช้ไฟล์ template เป็น .html 
 		```javascript
+		const hbs = require('hbs');
+		const path = require('path');
+		// view engine setup
+		app.set('views', path.join(__dirname, 'views')); // ชื่อเดียวกับที่สร้าง folder ไว้
 		app.set('view engine', 'html');
 		app.engine('html', require('hbs').__express);
 		```
@@ -88,7 +100,7 @@ app.listen(3000);
 	  - ไฟล์ app.js
 		```javascript
 		app.get('/about', (req, res) =>{
-			res.render('about.hbs', {
+			res.render('about.hbs', { // res.render() ใช้ render template ส่งกลับไปส่งที่ browser
 				pageTitle: 'About Page',
 				currentYear: new Date().getFullYear()
 			});
@@ -166,15 +178,47 @@ app.listen(3000);
 		</footer>
 		```
 ### 2. Jade ###
+```javascript
+const jade = require('jade');
+const path = require('path');
+// view engine setup
+app.set('views', path.join(__dirname, 'views')); // ชื่อเดียวกับที่สร้าง folder ไว้
+app.set('view engine', 'jade');
+```
 
 ### 3. EJS ###
+```javascript
+const ejs = require('ejs');
+const path = require('path');
+// view engine setup
+app.set('views', path.join(__dirname, 'views')); // ชื่อเดียวกับที่สร้าง folder ไว้
+app.set('view engine', 'ejs');
+```
 
+### 4. Swig ###
+- ใช้ render ไฟล์ template ที่เป็น .html
+```javascript
+const swig = require('swig');
+const path = require('path');
+// view engine setup
+app.engine('html', swig.renderFile);
+app.set('views', path.join(__dirname, 'views')); // ชื่อเดียวกับที่สร้าง folder ไว้
+app.set('view engine', 'html');
+```
+
+**หมายเหตุ** ถ้าทำแอฟแบบ SPA เช่นใช้ Angular ไม่ต้องตั้งค่า view engine ให้เอาไฟล์ index.html ไปไว้ที่ folder ชื่อ public แล้วทำเป็น static folder ให้ browser โหลดไปทำงานที่ browser แทน
+
+```javascript
+// ตั้งค่า static folder
+app.use(express.static(path.join(__dirname, 'public'))); // ชื่อเดียวกับที่สร้าง folder ไว้
+```
 
 ## Express Middleware ##
 
 - express สามารถสร้าง middleware เพื่อให้ทำงานแบบ FIFO (First-In-First-Out)
 
 ```javascript
+// ใช้ app.use() เพื่อสร้าง middleware มันจะทำงานเรียงจากบนลงล่าง
 app.use((req, res, next) => {
 	// req คือ Object ของ HTTP Request
 	// res คือ Object ของ HTTP Response
@@ -293,7 +337,7 @@ app.get(/.*fly$/, function (req, res) {
 })
 ```	
 
-### Route parameters ###
+### Passing parameters ###
 
 - เราสามารถส่ง parameter ไปกับ path ที่เรียกไปได้ โดยใช้ `:paramName` และเรียกใช้งานผ่าน `req.param`
 
@@ -379,6 +423,6 @@ app.use('/birds', birds)
 
 ## โมดูลที่แนะนำให้ใช้ร่วมกับ Express ในกทำ APIs Server ##
 - bodyParser
-- morgan
+- morgan // จัดการ log
 - mongoose // ถ้าใช้ db เป็น mongodb
 - pg-promise // ถ้าใช้ db เป็น postgres
