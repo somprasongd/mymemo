@@ -1,6 +1,6 @@
 # Node.js #
 
-Last Updated: 25/05/2017
+Last Updated: 26/05/2017
 
 ## ทบทวนเนื้อหา JavaScript ##
 [JavaScript](../JavaScript/01-JavaScript)
@@ -87,37 +87,37 @@ undefined
 
 1. **Core Module** ใช้ `require('module name');` จะเป็น module ที่มีมาใน Node.js เลย ดูว่ามีอะไรให้ใช้บ้างจาก [Doc](https://nodejs.org/api/)
     ```javascript
-	const fs = require('fs');
+    const fs = require('fs');
 
-	fs.appendFile('greetings.txt', 'Hello World!');
+    fs.appendFile('greetings.txt', 'Hello World!');
     ```
     [ตัวอย่างการใช้ Core Module](./Core-Modules)
     
 2. **File Module** เป็น module ที่่สร้างขึ้นมาเองเอง ใช้ `require('./notes');` ต้องระบุตำแหน่งของไฟล์ (ถ้าไม่ใส่นามสกุลไฟล์ `require()` จะไปถ้าที่ .js ให้เอง) โดยไฟล์ notes.js ต้องมี `module.exports` หรือ `exports` ด้วย
 
-3. **Folder Module** จะระบุ path ไปยังโฟลเดอร์ที่มีไฟล์ package.json เช่น `var say = require('./module');`
+3. **Folder Module** จะระบุ path ไปยังโฟลเดอร์ที่มีไฟล์ index.js เช่น `var say = require('./module');` หรือมี package.json โดยปกติใน package.json ที่ `"main": "index.js"` ดังนั้น มันจะไปดูว่ามีการทำ  `module.exports` หรือ `exports` อะไรไว้ใน index.js บ้าง
 
 4. **Third-party Module** เป็น module ที่ติดตั้งผ่าน npm โดยใช้ `npm install [module name] [options]` และเรียกใช้งานโดย `require('[module name]');` ระบุชื่อไปเลย เหมือน core module
     ```javascript
-	const gulp = require('gulp'); // ต้อง npm install gulp --save ก่อน
+    const gulp = require('gulp'); // ต้อง npm install gulp --save ก่อน
 
-	gulp.task('default', () => console.log('Hello Gulp Task!'));
+    gulp.task('default', () => console.log('Hello Gulp Task!'));
     ```
 
-## การสร้าง module (ต้องกลับมาอัพเดทอีกที เผื่อเข้าใจผิดอยู่) ##
+## การสร้าง Module ##
 
 ต้องสร้างไฟล์ xxx.js ขึ้นมา และทำการ export ส่วนที่ต้องการให้ใช้งานออกไป ซึ่งสามารถทำได้ 2 วิธี
 
 1. ใช้ `exports.xxx = function(){};`
 
-2. ใช้ `module.exports = {};` หรือ `module.exports.xxx = function(){};`
+2. ใช้ `module.exports = {};` หรือ `module.exports = function ([param]){return yyy;};` หรือ `module.exports.xxx = function(){};`
 
-ซึ่งเมื่อเราเรียกใช้ `require('path/file-module');` ตัว `function require(path);` จะ `return module.exports;` ออกมาให้ และมีการสร้างตัวแปร `var exports = module.exports = {};`
+ซึ่งเบื้องหลังการทำงาน เมื่อเราเรียกใช้ `require('path/file-module');` ตัว `function require(path);` จะ `return module.exports;` ออกมาให้ และมีการสร้างตัวแปร `var exports = module.exports = {};` จึงสามารถใช้ `exports.xxx = function(){};` ได้
 
 
 ## NPM ##
 
-- เริ่มต้นใช้คำสั่ง `npm init` เพื่อสร้างไฟล์ package.json
+- เริ่มต้นใช้คำสั่ง `npm init` เพื่อสร้างไฟล์ package.json (มันจะมีคำถาม เช่น พวกชื่อ เวอร์ชัน คำอธิบาย ให้กด enter ข้ามไปก่อนค่อยแก้ที่หลังได้)
 - ต้องติดตั้ง module ที่จะใช้งานจาก npm ใช้คำสั่ง `npm install [module name] --save` โดย `--save` คือบอกว่าใช้เฉพาะโปรเจคนี้ และสั่งให้บันทึกลงในไฟล์ package.json ด้วย แต่ถ้าต้องการติดตั้งแบบ global คือต้องการใช้ทุกโปรเจค ให้เปลี่ยนไปใช้ `-g` แทน
 - การระบุ version ทำได้โดย `npm install <module_name>@4.2.3` ซึ่งเลขเวอร์ชันจะเป็นแบบ major.minor.patch
 - การอัพเดท ใช้ `npm update <module_name>` สามารถใส่ --save หรือ -g ได้

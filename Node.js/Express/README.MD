@@ -131,7 +131,7 @@ app.listen(3000, err => {
 		const app = express();
 
 		// บอกว่า partial folder อยู่ที่ไหน
-		hbs.registerPartials(__dirname + 'views/partials/);   
+		hbs.registerPartials(__dirname + 'views/partials/');   
 		app.set('view engine', 'hbs');		
 		```
 		- ไฟล์ partial ชื่อ views/partials/footer.hbs

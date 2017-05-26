@@ -109,3 +109,8 @@ jwt.verify(token, cert, { algorithms: ['RS256'] }, function (err, payload) {
   // if token alg != RS256,  err == invalid signature 
 });
 ```
+
+## Request Header ##
+- ให้ส่งไปใน `Authorization: Bearer TOKEN_STRING`
+- ตัวอย่าง
+![Postman](./resources/postman.png)

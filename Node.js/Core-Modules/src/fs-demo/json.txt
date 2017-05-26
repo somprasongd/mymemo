@@ -1,0 +1,9 @@
+{
+    "name": "Somprasong Damyos",
+    "gender": "male",
+    "emails": [
+        {"email": "a@mail.com"},
+        {"email": "b@mail.com"},
+        {"email": "c@mail.com"}
+    ]
+}
