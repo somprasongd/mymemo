@@ -1,0 +1,16 @@
+const Model = require('../model');
+
+const Patients = {
+    table: 'patient',
+    permittedAttrs: ['firstname', 'lastname', 'hn']
+};
+
+// สามารถใช้งาน spread properties แทนได้
+// see https://babeljs.io/docs/plugins/transform-object-rest-spread/
+Object.assign(Patients,
+    Model, {
+        // other functions in each model
+        
+    });
+
+module.exports = Patients;

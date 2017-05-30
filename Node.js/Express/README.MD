@@ -206,7 +206,7 @@ app.set('views', path.join(__dirname, 'views')); // ชื่อเดียว�
 app.set('view engine', 'html');
 ```
 
-### SPA (Single Page Application)###
+### SPA (Single Page Application) ###
 - ถ้าทำแอฟแบบ SPA เช่นใช้ Angular ไม่ต้องตั้งค่า view engine ให้เอาไฟล์ index.html ไปไว้ที่ folder ชื่อ public แล้วทำเป็น static folder ให้ browser โหลดไปทำงานที่ browser แทน
 
 ```javascript
@@ -428,7 +428,8 @@ app.use('/birds', birds)
 5. รันโปรแกรม OS X `$ DEBUG=myapp:* npm start` ส่วน Windows `$ set DEBUG=myapp:* & npm start`
 
 ## โมดูลที่แนะนำให้ใช้ร่วมกับ Express ในกทำ APIs Server ##
-- bodyParser
+- bodyParser // เป็น middlewares ที่เอาข้อมูลจาก body message แปลงเป็น json
+- cors // ทำให้เรียกข้าม domains ได้
 - morgan // จัดการ log
 - mongoose // ถ้าใช้ db เป็น mongodb
 - pg-promise // ถ้าใช้ db เป็น postgres
