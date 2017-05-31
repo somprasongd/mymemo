@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 // setup routes
 routes.setupRoutes(app);
 
-// catch 404 and forward to error handler
+// catch 404 and error handler
 app.use(function(req, res, next) {
   res.status(404).send({
 	  status: 404,

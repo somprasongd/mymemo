@@ -48,6 +48,15 @@ const Model = {
             throw err;
         }
     },
+    async inactive(id) {
+        try {
+            let result = await this.db.result(`update ${this.table} SET active = false where id = $1`, +id); // +id คือแปลง string to integer
+            // rowCount = number of rows affected by the query
+            return result.rowCount;
+        } catch (err) {
+            throw err;
+        }
+    },
     async destroy(id) {
         try {
             let result = await this.db.result(`delete from ${this.table} where id = $1`, +id); // +id คือแปลง string to integer

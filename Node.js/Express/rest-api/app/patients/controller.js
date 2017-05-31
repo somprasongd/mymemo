@@ -36,6 +36,15 @@ const PatientController = {
             res.status(500).send({err: err.message});
         });
     },
+    inactive(req, res) {
+        PatientModel.inactive(req.params.id)
+        .then(patient => {
+            res.status(204).send();
+        })
+        .catch(err => {
+            res.status(500).send({err: err.message});
+        });
+    },
     destroy(req, res) {
         PatientModel.destroy(req.params.id)
         .then(patient => {

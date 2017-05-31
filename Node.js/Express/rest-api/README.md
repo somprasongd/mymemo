@@ -50,6 +50,7 @@ const app = express();
 const PORT = config.port;
 
 // set enviroments
+app.use(logger('dev'));
 // ให้ body-parser แปลง body message เป็น json
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -85,9 +86,12 @@ Server is runnig at http://localhost:8080
 
 ## ออกแบบการทำงาน ##
 - นำ MVC มาประยุกต์ใช้ โดยจะใช้ C (controller) มาจัดการกับ request ที่รับเข้ามาว่าต้องการอะไร แล้วส่งต่อไปให้ M (model) ซึ่งจะมี business logic กับการติดต่อฐานข้อมูลอยู่ที่นี่ เมื่อได้ผลลัพธ์ออกมาแล้ว model จะส่งไปหา controller ให้ส่ง respone กับไปหา client
-- แต่เราจะเพิ่ม express.Router() มารับ request แล้วให้ Router ส่งต่อไปยัง controller อีกทีนึงแทน
 
 ![MVC](./resources/mvc.png)
+
+- แต่เราจะเพิ่ม express.Router() มารับ request แล้วให้ Router ส่งต่อไปยัง controller อีกทีนึงแทน
+
+![MVC](./resources/router.png)
 
 - จัดการโครงสร้างของโปรเจคโดยใช้วิธี Folder by Features คือการแบ่งโฟลเดอร์ออกตาม resources และข้างในจะมี routes.js, controller.js, model.js เช่น
 ```
@@ -204,7 +208,7 @@ module.exports = {
 ```javascript
 const config = require('./config');
 // Loading and initializing the library:
-const pgp = require('pg-promise')(config.pgpOptions);
+const pgp = require('pg-promise')();
 
 // Creating a new database instance from the connection details:
 const db = pgp(config.pgpConnection);
@@ -219,6 +223,10 @@ const db = require('./db');
 
 module.exports = Object.assign({}, Config, {db});
 ```
+
+- การใช้งาน pg-promise
+  - ดูรายละเอียดเพิ่มเติม <https://github.com/vitaly-t/pg-promise>
+  - ตัวอย่างการใช้งาน <https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example>
 
 ## สร้าง Model ##
 - ในต้องละ features จะมี model.js เป็นของตัวเอง เอาจัดการกับ business logic กับติดต่อการฐานข้อมูล โดยจะรับพารามิเตอร์มาจาก controller เมื่อทำงานเสร็จจะรีเทิร์นค่ากลับไปยัง controller
@@ -322,6 +330,131 @@ module.exports = Patients;
   ```
   - ทดลองเรียกใช้งานดู ก็จะได้ผลลัพธ์เหมือนกัน
   
-## pg-promise ##
-- ดูรายละเอียดเพิ่มเติม <https://github.com/vitaly-t/pg-promise>
-- ตัวอย่างการใช้งาน <https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example>
+### การ Insert & Update ###
+- การ insert & update จะมีการตรวจสอบข้อมูลที่ client ส่งมาก่อนว่ามีฟิลด์ที่ห้าม insert/update อยู่ด้วยหรือไม่
+- เพิ่มฟังก์ชันการตรวจสอบที่ ./app/model.js
+```javascript
+withPermitedAttrs(attrs, init = {}) {
+    // ใช้ reduce ในการตรวจสอบเลือกเอาเฉพาะ attrs ที่อนุญาตเท่านั้น โดยตรวจสอบจาก this.permittedAttrs
+    // สามารถกำหนดค่าเริ่มต้นที่ต้องมีได้ ผ่าน init
+    return this.permittedAttrs.reduce(
+        (record, attr) => {
+            return attrs[attr] ? Object.assign(record, {
+                [attr]: attrs[attr]
+            }) : record
+        }, init);
+}
+```
+- ดังนั้นในแต่ละ ./app/{features}/model.js ต้องเพิ่มตัวแปร `permittedAttrs` ไว้เป็นของตัวเอง
+```javascript
+// ./app/patients/model.js
+const Patients = {
+    table: 'patient',
+    permittedAttrs: ['hn', 'firstname', 'lastname', 'gender', 'dob']
+};
+```
+- เพิ่มโค้ดฟังก์ชัน create ใช้สำหรับการ insert ข้อมูลใหม่
+```javascript
+async create(attrs) {
+    try {
+        // เลือกเอาเฉพาะ  keys = ['hn', 'firstname', 'lastname', 'gender', 'dob']
+        const datas = this.withPermitedAttrs(attrs, {
+            active: true // insert ใหม่ ต้องมี active = true
+        });
+        /* ใช้ Object.keys(datas) จะได้ชื่อคีย์เป็น ['hn', 'firstname', 'lastname', 'gender', 'dob']
+        ใช้ reduce เอาชื่อ keys มาต่อ string เพื่อเอาไปใช้เป็น named parameters ของ pg-promise 
+        values =  $(hn), $(firstname), $(lastname), $(gender), $(dob)
+        */
+        const values = Object.keys(datas).reduce((acc, curr) => {
+            return acc + (acc.length === 0 ? '' : ', ') + ` $(${curr})`;
+        }, '');
+        // pg-promise ใช้ $(this~) เพื่อเอาชื่อ keys จาก object ออกมาต่อเป็นชื่อ columns ให้
+        const sql = `INSERT INTO ${this.table} ($(this~)) VALUES (${values}) RETURNING *`;
+        // RETURNING * คือ เมื่อ insert สำเร็จให้รีเทิร์นค่าทุกฟิลด์ออกมา ใส่ใน patient
+        let patient = await this.db.one(sql, datas);
+        return patient;
+    } catch (err) {
+        throw err;
+    }
+}
+```
+- เพิ่มโค้ดของ controller.js ให้มาเรียกใช้งาน `create`
+```javascript
+create(req, res) {
+    PatientModel.create(req.body)
+    .then(patient => {
+        res.send({patient});
+    })
+    .catch(err => {
+        res.status(500).send({err: err.message});
+    });
+}
+```
+- จัดการ request ที่มีเป็น POST ให้ไปเรียกใช้งาน controller.create
+```
+.post('/', PatientController.create)
+```
+- เพิ่มโค้ดฟังก์ชัน update ใช้สำหรับการ update ข้อมูล
+```javascript
+async update(id, attrs) {
+    try {
+        // เลือกเอาเฉพาะ  keys = ['hn', 'firstname', 'lastname', 'gender', 'dob']
+        const datas = this.withPermitedAttrs(attrs);
+        // "hn" = $(hn), "firstname" = $(firstname), "lastname" = $(lastname), "gender" = $(gender), "dob" = $(dob)
+        const values = Object.keys(datas).reduce((acc, curr) => {
+            return acc + (acc.length === 0 ? '' : ', ') + `"${curr}" = $(${curr})`;
+        }, '');
+        const sql = `UPDATE ${this.table} SET ${values} WHERE id = ${+id} RETURNING *`;
+        let patient = await this.db.one(sql, datas);
+        return patient;
+    } catch (err) {
+        throw err;
+    }
+}
+```
+- เพิ่มโค้ดของ controller.js ให้มาเรียกใช้งาน `update`
+```javascript
+update(req, res) {
+    PatientModel.update(req.params.id, req.body)
+    .then(patient => {
+        res.send({patient});
+    })
+    .catch(err => {
+        res.status(500).send({err: err.message});
+    });
+}
+```
+- จัดการ request ที่มีเป็น PUT ให้ไปเรียกใช้งาน controller.update
+```
+.put('/:id', PatientController.update)
+```
+
+### การ Delete ###
+- เพิ่มโค้ดฟังก์ชัน destroy ใช้สำหรับการลบข้อมูล
+```javascript
+async destroy(id) {
+    try {
+        let result = await this.db.result(`delete from ${this.table} where id = $1`, +id); // +id คือแปลง string to integer
+        // rowCount = number of rows affected by the query
+        return result.rowCount;
+    } catch (err) {
+        throw err;
+    }
+}
+```
+- เพิ่มโค้ดของ controller.js ให้มาเรียกใช้งาน `destroy`
+```javascript
+destroy(req, res) {
+    PatientModel.destroy(req.params.id)
+    .then(patient => {
+        res.status(204).send();
+    })
+    .catch(err => {
+        res.status(500).send({err: err.message});
+    });
+}
+```
+- จัดการ request ที่มีเป็น DELETE ให้ไปเรียกใช้งาน controller.destroy
+```
+.delete('/:id', PatientController.destroy)
+```

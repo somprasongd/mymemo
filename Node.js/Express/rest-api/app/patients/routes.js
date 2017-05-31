@@ -6,5 +6,6 @@ exports.setup = function(router) {
     .get('/', PatientController.getAll)
     .post('/', PatientController.create)
     .put('/:id', PatientController.update)
+    .patch('/:id', PatientController.inactive)
     .delete('/:id', PatientController.destroy)
 }

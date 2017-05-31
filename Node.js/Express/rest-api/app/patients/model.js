@@ -2,7 +2,7 @@ const Model = require('../model');
 
 const Patients = {
     table: 'patient',
-    permittedAttrs: ['firstname', 'lastname', 'hn']
+    permittedAttrs: ['hn', 'firstname', 'lastname', 'gender', 'dob']
 };
 
 // สามารถใช้งาน spread properties แทนได้
