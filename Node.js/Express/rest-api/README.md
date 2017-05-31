@@ -458,3 +458,48 @@ destroy(req, res) {
 ```
 .delete('/:id', PatientController.destroy)
 ```
+
+## เทคนิคเลือกส่งข้อมูลกลับไปเฉพาะบางฟิลด์ ##
+- เช่นเมื่อบันทึกข้อมูล patient คนใหม่ เสร็จแล้ว ต้องการให้รีเทิร์นเฉพาะ "id", "hn" กลับออกไปเท่านั้น สามารถทำได้ดังนี้
+- สร้างไฟล์ ./app/serializer.js
+```javascript
+const Serializer = {
+    for(method, resource){
+        return this[method](resource);
+    }
+}
+
+module.exports = Serializer;
+```
+- สร้างไฟล์ ./app/patients/serializer.js
+```javascript
+const Serializer = require('../serializer');
+
+const PatientSerializer = {};
+
+Object.assign(PatientSerializer, Serializer, {
+    create(resource){
+        const {id, hn} = resource;
+        return {id, hn};
+    }
+});
+
+module.exports = PatientSerializer;
+```
+- นำ serializer นี้ไปใส่ใน controller
+```javascript
+const PatientSerializer = require('./serializer');
+
+// ...
+create(req, res) {
+    PatientModel.create(req.body)
+    .then(patient => {
+        res.send({patient: PatientSerializer.for('create', patient)});
+    })
+    .catch(err => {
+        res.status(500).send({err: err.message});
+    });
+}
+// ...
+```
+- ลองทดสอบดู จะได้แบบนี้ `{"patient":{"id":9,"hn":"1700000007"}}`
