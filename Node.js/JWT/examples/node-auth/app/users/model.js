@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -19,11 +20,46 @@ var UserSchema = new Schema({
 //            "Password must be at least 8 charecters"
 //        ]
     },
-    admin: {
+    isAdmin: {
         type: Boolean,
         default: false
     }
 });
+
+// Pre save
+UserSchema.pre('save', async function (next) {
+    if (this.password) {
+        this.password = await this.hashPassword(this.password);
+    }
+    next();
+});
+
+UserSchema.methods.hashPassword = function (password) {
+    return new Promise((resolve, reject) => {
+        let saltRound = 10; // คือจำนวนรอบในการทำงานผ่านอัลกอริทึมใน bcrypt 10 = 2 ยกกำลัง 10 รอบ
+        bcrypt.hash(password, saltRound, (err, hash) => {
+            if(err){
+                reject(err);
+            }else{
+                resolve(hash);
+            }            
+        });
+    });
+};
+
+UserSchema.methods.authenticate = function (password) {
+    return new Promise((resolve, reject) => {
+        const hash = this.password;
+
+        bcrypt.compareSync(password, hash, (err, isValid) => {
+            if(err) {
+                reject(err);
+            }else{
+                resolve(isValid);
+            }
+        })
+    });
+};
 
 // Step 2: create model
 mongoose.model('User', UserSchema);

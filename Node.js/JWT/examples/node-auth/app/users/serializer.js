@@ -1,12 +1,23 @@
 const Serializer = require('../serializer');
 
-const PatientSerializer = {};
+const UserSerializer = {};
 
-Object.assign(PatientSerializer, Serializer, {
+Object.assign(UserSerializer, Serializer, {
+    getAll(resources){        
+        return resources.map(resource => this.serializer(resource));
+    },
+    get(resource){
+        return this.serializer(resource);
+    },
     create(resource){
-        const {id, hn} = resource;
-        return {id, hn};
+        return this.serializer(resource);
+    },
+    update(resource){
+        return this.serializer(resource);
+    }, 
+    serializer(resource){
+        const {_id, username, isAdmin} = resource;
+        return {_id, username, isAdmin};
     }
 });
-
-module.exports = PatientSerializer;
+module.exports = UserSerializer;
