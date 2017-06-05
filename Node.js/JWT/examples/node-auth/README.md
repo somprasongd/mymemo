@@ -290,6 +290,7 @@ exports.setupRoutes = function (app) {
 ```
 
 ## ปรับปรุงการบันทึก password ##
+- ดูเรื่อง [Storing Password](../../../../Storing-Password)
 - จากโค้ดข้างบน เมื่อลองสร้าง user ใหม่จะพบว่า password จะเก็บลงไปตรงๆ ซึ่งเป็นวิธีการที่ไม่ถูกต้อง
 - ดังนั้นต้องเข้ารหัส password ก่อนบันทึกข้อมูล โดยให้แก้ไขไฟล์ /app/users/model.js ตามนี้
 ```javascript
@@ -393,7 +394,7 @@ module.exports = UserController;
 ```
 
 ## Generate Token ##
-- ดูเรื่อง [JWT](../)
+- ดูเรื่อง [JWT](../..)
 - เมื่อสร้าง user ใหม่เสร็จ โค้ดเดิมจะคืนค่าข้อมูล user กลับออก ให้แก้ใหม่โดยให้คืนค่า access token กลับไปด้วย
 - แก้ไขไฟล์ /app/users/model.js
 ```javascript
@@ -426,5 +427,79 @@ async create(req, res) {
 }
 ```
 
-- gentoken
-- login service
+## Login Service ##
+- ส่วนสุดท้ายเป็นการทำ login ถ้าสำเร็จจะได้ access token กลับไป
+- เพิ่มโฟลเดอร์ /app/auth เพื่อทำ service สำหรับการ login
+- เพิ่มไฟล์ /app/auth/routes.js
+```javascript
+const controller = require('./controller');
+
+exports.setup = function(router) {
+    router.post('/', controller.login);
+}
+```
+- เพิ่มไฟล์ /app/auth/controller.js
+```javascript
+const mongoose = require('mongoose');
+const UserModel = mongoose.model('User');
+const UserSerializer = require('./serializer');
+
+const Controller = {     
+    async login(req, res) {
+        try{
+            const {username, password} = req.body;
+            const user = await UserModel.findOne({'username': username});
+            const isValid = await user.authenticate(password);
+            if (isValid) {
+                res.status(201).json({
+                    user: UserSerializer.for('login', user),
+                    accessToken: user.genToken()
+                });
+            }else{
+                res.status(401).json({
+                    user: {
+                        errors: 'Invalid credentials'
+                    }
+                });
+            }         
+        }catch(err){
+            res.status(500).json({status: 500, message: err.message || err});
+        }
+    }
+}
+
+module.exports = Controller;
+```
+
+- กลับไปเพิ่ม method `authenticate` ที่ Users Model
+```javascript
+UserSchema.methods.authenticate = function (password) {
+    return new Promise((resolve, reject) => {
+        const hash = this.password;
+        bcrypt.compare(password, hash, (err, isValid) => {
+            if(err) {
+                reject(err);
+            }else{
+                resolve(isValid);
+            }
+        })
+    });
+};
+```
+
+- เพิ่มไฟล์ /app/auth/serializer.js เพื่อกำหนดข้อมูล user ที่จะส่งคืนกลับไป
+```javascript
+const serializer = require('../serializer');
+
+const authSerializer = {};
+
+Object.assign(authSerializer, serializer, {    
+    login(resource){
+        const {username, isAdmin} = resource;
+        return {username, isAdmin};
+    }
+});
+module.exports = authSerializer;
+```
+
+- ทดสอบ login ดู
