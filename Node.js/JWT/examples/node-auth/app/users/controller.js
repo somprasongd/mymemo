@@ -25,7 +25,10 @@ const UserController = {
             const {username, password, isAdmin = false} = req.body;
             const newUser = new UserModel({username, password, isAdmin});
             const user = await newUser.save();
-            res.status(201).json({user: UserSerializer.for('create', user)});
+            res.status(201).json({
+                user: UserSerializer.for('create', user),
+                accessToken: user.genToken()
+            });
         }catch(err){
             res.status(500).json({status: 500, message: err.message || err});
         }

@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('../../config');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
 
 // Step 1: Create schema
 var UserSchema = new Schema({    
@@ -50,8 +53,7 @@ UserSchema.methods.hashPassword = function (password) {
 UserSchema.methods.authenticate = function (password) {
     return new Promise((resolve, reject) => {
         const hash = this.password;
-
-        bcrypt.compareSync(password, hash, (err, isValid) => {
+        bcrypt.compare(password, hash, (err, isValid) => {
             if(err) {
                 reject(err);
             }else{
@@ -59,6 +61,14 @@ UserSchema.methods.authenticate = function (password) {
             }
         })
     });
+};
+
+UserSchema.methods.genToken = function () {
+    return jwt.sign({
+        sub: this._id,
+        username: this.username,
+        isAdmin: this.isAdmin
+    }, config.secret, { expiresIn: '1h' });
 };
 
 // Step 2: create model

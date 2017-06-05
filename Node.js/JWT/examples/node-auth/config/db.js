@@ -11,14 +11,16 @@ const setupModels = function (APP_DIR) {
     );
 
     features.forEach(feature => {
-        console.log(`${APP_DIR}/${feature}/model.js`);
-        require(`${APP_DIR}/${feature}/model.js`);
+        if (fs.existsSync(`${APP_DIR}/${feature}/model.js`)) {
+            console.log(`${APP_DIR}/${feature}/model.js`);
+            require(`${APP_DIR}/${feature}/model.js`);
+        }
+        
     });
 }
 const DB = {
     async connect(APP_DIR) {
-        mongoose.set('debug', config.debug);
-        console.log('Connecting to mongodb via mongoose.');
+        mongoose.set('debug', config.debug);        
         // Catching the events
         mongoose.connection.on('connected', function () {
             console.log('Mongoose connected');
@@ -35,11 +37,12 @@ const DB = {
                 process.exit(0);
             });
         });
-        // connect to mongodb
-        mongoose.connect(config.mongoUri);
         // load model
         // ตัวอย่าง require('model.js');
         setupModels(APP_DIR);
+        // connect to mongodb
+        console.log('Connecting to mongodb via mongoose.');
+        mongoose.connect(config.mongoUri);        
     }
 };
 

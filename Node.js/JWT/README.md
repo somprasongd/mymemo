@@ -1,22 +1,49 @@
 # JWT #
 
-Web site: [https://jwt.io](https://jwt.io)
+- Web site: [https://jwt.io](https://jwt.io)
 
-## Hashing คือ ##
+- JSON Web Token (JWT) อ่านออกเสียงว่า JOT
 
-การ hash คือการเข้ารหัสประเภทหนึ่ง ซื่งถ้าเป็นค่าเดิมต้องได้เลข hash เป็นเลขเดิมเสมอ
+- ประกอบด้วย 3 ส่วน แบ่งด้วย dots (.) -> xxxxx.yyyyy.zzzzz
+  - **header** (xxxxx)เป็นส่วนที่บอกว่าเป็นชนิดอะไร (`typ`) และมี hashing algorithm (`alg`)เป็นอะไร เช่น HMAC SHA256 หรือ RSA แล้วเอามาเข้ารหัสแบบ Base64 เอาไว้ _(Base64 decode กลับได้)_
 
-1. ติดตั้ง package [crypto-js](https://www.npmjs.com/package/crypto-js) `$ npm i crypto-js --save`
-2. การใช้งาน
+  ```json
+  {
+    "typ": "JWT",
+    "alg": "HS256"
+  }
+  ```    
+  - **payload** (yyyyy) เป็นส่วนที่เอาไว้เก็บ claims (read-only signed claims แก้ไขไม่ได้ ถ้าแก้ token จะ invalid) ซึ่งคือส่วนของข้อมูลทั่วไป หรือข้อมูล user จะมีอยู่ 3 ประเภท คือ reserved, public, and private claims แล้วเอามาเข้ารหัสแบบ Base64 เอาไว้ _(Base64 decode กลับได้)_
 
-	```javascript
-	
-	const {SHA256} = require('crypto-js');
-	
-	var message = 'Somprasong Damyos';
-	var hash = SHA256(message).toString();
-	
-	```
+  ```json
+  {
+    "sub": "1234567890",
+    "name": "John Doe",
+    "admin": true
+  }
+
+  // predefined keys
+  - sub (Subject) คือ identifier ของ token นี้ ส่วนใช้ userId
+  - iat (Issued At) คือ สร้าง token นี้เมื่อไหร่ รูปแบบ unix timestamp
+  - exp (Expiry) คือ token หมดอายุเมื่อไหร่ รูปแบบ unix timestamp
+  - iss (Issuer) คือ ใคร้เป็นสร้าง token นี้
+  ``` 
+    - **signature** (zzzzz) เป็นการเอา encoded header, encoded payload และ secret มาเข้ารหัสด้วย algorithm ที่ระบุอยู่ใน header
+
+  ```javascript
+  HMACSHA256(
+    base64UrlEncode(header) + "." +   
+    base64UrlEncode(payload),   
+    secret
+  )
+
+  ```
+  - สุดท้ายเอาทั้ง 3 ส่วนมาต่อกัน `HEADER.PAYLOAD.SIGNATURE` ก็จะได้ JWT
+  ```
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.
+  TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ  
+  ```
 
 ## Package jsonwebtoken ##
 

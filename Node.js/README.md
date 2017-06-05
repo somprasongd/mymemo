@@ -187,9 +187,25 @@ var person = JSON.parse(personStr);
   - `nvm use 6.10.2` ใช้สำหรับสลับไปใช้งานเวอร์ชัน 6.10.2
   - ลองตรวจสอบด้วย `node -v`
 
+## Hashing คือ ##
+
+การ hash คือการเข้ารหัสประเภทหนึ่ง ซื่งถ้าเป็นค่าเดิมต้องได้เลข hash เป็นเลขเดิมเสมอ ตัวอย่าง
+
+1. ติดตั้ง package [crypto-js](https://www.npmjs.com/package/crypto-js) `$ npm i crypto-js --save`
+2. การใช้งาน
+
+	```javascript
+	
+	const {SHA256} = require('crypto-js');
+	
+	var message = 'Somprasong Damyos';
+	var hash = SHA256(message).toString();
+ 	```
+
 ## อื่นๆ ##
 
 - การสร้าง Web Server โดยใช้ [Express](./Express)
+- ตัวอย่างการใช้งาน [Fetch API](./Fetch-API)
 - การทดสอบระบบโดยใช้ [Mocha](./Mocha)
 - ใช้ [MongoDB](../Database/MongoDB) โดย [Mongoose](./Mongoose) ORM
 - Security and Authentication โดยใช้ [JWT](./JWT)
