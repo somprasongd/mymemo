@@ -1,0 +1,23 @@
+{
+  "ids": {
+    "User": 1,
+    "AccessToken": 1,
+    "ACL": 1,
+    "RoleMapping": 1,
+    "Role": 1,
+    "Product": 3,
+    "Category": 1
+  },
+  "models": {
+    "User": {},
+    "AccessToken": {},
+    "ACL": {},
+    "RoleMapping": {},
+    "Role": {},
+    "Product": {
+      "1": "{\"name\":\"Tea\",\"price\":10,\"id\":1}",
+      "2": "{\"name\":\"test\",\"price\":100,\"id\":2}"
+    },
+    "Category": {}
+  }
+}
