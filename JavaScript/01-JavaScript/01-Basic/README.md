@@ -338,7 +338,7 @@ calculate = 100;
 console.log(calculate); // 100
 ```
 
-### 4.2 IIFE (Immediately Inviked Function Expressions) ###
+### 4.2 IIFE (Immediately Invoked Function Expressions) ###
   - คือฟังก์ชันที่เรียกใช้งานทันที
   - โดยการใส่ () ต่อท้ายฟังก์ชัน เพื่อเรียกใช้งานฟังก์ชันทันที และใส่ (...) ครอบไว้ซึ่งคือการทำ Wrapped Function 
   - **ตัวอย่าง**
