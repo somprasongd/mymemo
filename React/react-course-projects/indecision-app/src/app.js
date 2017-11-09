@@ -40,7 +40,43 @@ var templateThree = (
   </div>
 );
 
-var appRoot = document.getElementById('app');
+let count = 0;
+const addOne = () => {
+  count++;
+  console.log('addOne', count);
+  renderCounterApp();
+}
 
-// Render
-ReactDOM.render(templateThree, appRoot);
+const minusOne = () => {
+  count--;
+  console.log('minusOne', count);
+  renderCounterApp();
+}
+
+const reset = () => {
+  count = 0;
+  console.log('reset', count);
+  renderCounterApp();
+}
+
+const renderCounterApp = () => {
+  const templateFour = (
+    <div>
+      <h1>Count: {count}</h1>
+      <button 
+        id="my-id" 
+        className="button"
+        onClick={addOne}
+        >+1</button>
+      <button onClick={minusOne}>-1</button>
+      <button onClick={reset}>reset</button>
+    </div>
+  );
+  
+  var appRoot = document.getElementById('app');
+  
+  // Render
+  ReactDOM.render(templateFour, appRoot);
+}
+
+renderCounterApp();

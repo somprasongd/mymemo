@@ -143,3 +143,78 @@ var templateThree = (
   </div>
 );
 ```
+
+### Events & Attributes
+
+- Events เช่น onClick, onSubmit รูปแบบการใช้งาน `onClick={() => {}}` หรือ `onClick={functionName}` [ดูเพิ่มเติม](https://reactjs.org/docs/events.html#supported-events)
+- Attributes สามารถใช้ได้เหมือน HTML เลย ต่างที่ HTML ใช้เป็น lower case แต่ JSX ใช้เป็น camel case และมีคำพิเศษบางคำเช่น class ต้องใช้เป็น className
+
+```javascript
+let count = 0;
+const addOne = () => {
+  count++;
+  console.log('addOne', count);
+}
+
+const minusOne = () => {
+  count--;
+  console.log('minusOne', count);
+}
+
+const reset = () => {
+  count = 0;
+  console.log('reset', count);
+}
+
+const templateFour = (
+  <div>
+    <h1>Count: {count}</h1>
+    <button onClick={addOne}>+1</button>
+    <button onClick={minusOne}>-1</button>
+    <button onClick={reset}>reset</button>
+  </div>
+);
+```
+
+จากตัวอย่างข้างบน เมื่อกดปุ่มแล้วค่า count เปลี่ยนถูกต้อง แต่หน้าจอไม่ได้ถูก render ใหม่ ดังนั้นแก้ง่ายๆ โดยสั่งให้ react re-render ใหม่
+
+```javascript
+let count = 0;
+const addOne = () => {
+  count++;
+  console.log('addOne', count);
+  renderCounterApp();
+}
+
+const minusOne = () => {
+  count--;
+  console.log('minusOne', count);
+  renderCounterApp();
+}
+
+const reset = () => {
+  count = 0;
+  console.log('reset', count);
+  renderCounterApp();
+}
+
+const renderCounterApp = () => {
+  const templateFour = (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={addOne}>+1</button>
+      <button onClick={minusOne}>-1</button>
+      <button onClick={reset}>reset</button>
+    </div>
+  );
+  
+  var appRoot = document.getElementById('app');
+  
+  // Render
+  ReactDOM.render(templateFour, appRoot);
+}
+
+renderCounterApp();
+```
+
+ถ้าลองดูจากแทบ Elements ของ Dev tools เมื่อมีการกดปุ่มจะเห็นว่า DOM จะถูกอัพเดทแค่ส่วนของตัวเลขเท่านั้น ไม่ได้ render ใหม่ทั้งหมด ตรงนี้เพราะ react มี virtual dom 
