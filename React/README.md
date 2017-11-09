@@ -112,3 +112,34 @@ var templateTwo = (
 ```
 
 ข้อควรระวัง JSX  ไม่สามารถแสดง object ได้ `<h1>{user}</h1>`
+
+**ข้างใน {} JSX จะไม่แสดงอะไรออกมา เมื่อมีค่าเป็น false หรือ null หรือ undefined**
+**ข้างใน {} สามารถใส่ JSX ลงไปได้**
+
+### JSX Condition
+
+สามารถใช้ condition ได้ 3 วิธี
+1. ไปเขียนเป็น function แล้วเรียกใช้ใน JSX ผ่าน `{}`
+2. ใช้ `{ true ? 'Show when true' : 'Show when false' }`
+3. ใช้ Logical Operators เช่น
+```javascript
+true && 'Show when true'
+
+false && 'Show when true' // return false และ JSX จะไม่แสดงอะไรออกมา ค่ามีค่าเป็น false หรือ null หรือ undefined
+```
+
+```javascript
+function getLocation(location) {
+  if(location){
+    return <p>Location: {user.location}</p>
+  }  
+}
+
+var templateThree = (
+  <div>
+    <h1>{user.name ? user.name : 'Anonymous'}</h1>
+    {(user.age && user.age >= 20) && <p>Age: {user.age}</p>}
+    {getLocation(user.location)}
+  </div>
+);
+```

@@ -26,7 +26,21 @@ var templateTwo = (
   </div>
 );
 
+function getLocation(location) {
+  if(location){
+    return <p>Location: {user.location}</p>
+  }  
+}
+
+var templateThree = (
+  <div>
+    <h1>{user.name ? user.name : 'Anonymous'}</h1>
+    {(user.age && user.age >= 20) && <p>Age: {user.age}</p>}
+    {getLocation(user.location)}
+  </div>
+);
+
 var appRoot = document.getElementById('app');
 
 // Render
-ReactDOM.render(templateTwo, appRoot);
+ReactDOM.render(templateThree, appRoot);
