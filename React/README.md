@@ -251,3 +251,31 @@ var template = (
 ```
 
 สามารถเข้าถึง value ได้โดย `const option = e.target.elements.option.value;`
+
+### Array in JSX
+
+เมื่อ JSX เจอ array เช่น `{[99, 98, 97, 'Ball', null, undefined, true]}` JSX จะแปลงเป็น `{99}{98}{97}{'Ball'}{null}{undefined}{true}`
+
+และใน react จะใช้ array.map() ในการแปลง array ของข้อมูลไปเป็น array ของ jsx
+
+```javascript
+<ol>
+  {
+    app.options.map((option) => {
+      return <li>{option}</li>
+    })
+  }
+</ol>
+```
+
+จากโค้ดข้างบนสามารถรันได้ แต่จะมี waring ว่า `Warning: Each child in an array or iterator should have a unique "key" prop.` ดังนั้นต้องแก้เป็ฯ
+
+```javascript
+<ol>
+  {
+    app.options.map((option) => {
+      return <li key={option}>{option}</li>
+    })
+  }
+</ol>
+```
