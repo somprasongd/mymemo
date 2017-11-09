@@ -67,3 +67,48 @@ var template = React.createElement(
 
 - แต่ถ้าต้องการให้ babel complie ให้อัตโนมัติเมื่อมีการเปลี่ยนแปลงไฟล์ ./src/app.js ใช้คำสั่ง `babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch`
 
+## JSX
+
+JSX จะต้องมีแค่ single root element เท่านั้น 
+
+```javascript
+console.log('App.js is running!');
+
+// JSX - JavaScript XML
+var template = (
+  <div>
+    <h1>React App</h1>
+    <p>This is JSX from app.js!</p>
+    <ol>
+      <li>Item One</li>
+      <li>Iten Two</li>
+    </ol>
+  </div>
+);
+// root element ที่จะให้ react ไปทำงาน
+var appRoot = document.getElementById('app');
+
+// Render with ReactDOM
+ReactDOM.render(template, appRoot);
+```
+
+### JSX Expression
+
+สามารถใช้ Javascript exporession ไปใน JSX ได้โดยใช้ `{}` ตัวอย่าง
+```javascript
+var user = {
+  name: 'Somprasong Damyos',
+  age: 32,
+  location: 'Phuket'
+};
+
+var templateTwo = (
+  <div>
+    <h1>{user.name}</h1>
+    <p>Age: {user.age}</p>
+    <p>Location: {user.location}</p>
+  </div>
+);
+```
+
+ข้อควรระวัง JSX  ไม่สามารถแสดง object ได้ `<h1>{user}</h1>`
