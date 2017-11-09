@@ -2,146 +2,84 @@
 
 console.log('App.js is running!');
 
-// JSX - JavaScript XML
-var template = React.createElement(
-  'div',
-  null,
-  React.createElement(
-    'h1',
-    null,
-    'React App'
-  ),
-  React.createElement(
-    'p',
-    null,
-    'This is JSX from app.js!'
-  ),
-  React.createElement(
-    'ol',
-    null,
-    React.createElement(
-      'li',
-      null,
-      'Item One'
-    ),
-    React.createElement(
-      'li',
-      null,
-      'Iten Two'
-    )
-  )
-);
-
-var user = {
-  name: 'Somprasong Damyos',
-  age: 32,
-  location: 'Phuket'
+var app = {
+  title: 'React App',
+  subtitle: 'Put your life in the hands of a computer',
+  options: []
 };
+var onFormSubmit = function onFormSubmit(e) {
+  e.preventDefault();
 
-var templateTwo = React.createElement(
-  'div',
-  null,
-  React.createElement(
-    'h1',
-    null,
-    user.name
-  ),
-  React.createElement(
-    'p',
-    null,
-    'Age: ',
-    user.age
-  ),
-  React.createElement(
-    'p',
-    null,
-    'Location: ',
-    user.location
-  )
-);
+  var option = e.target.elements.option.value;
 
-function getLocation(location) {
-  if (location) {
-    return React.createElement(
-      'p',
-      null,
-      'Location: ',
-      user.location
-    );
+  if (option) {
+    app.options.push(option);
+    e.target.elements.option.value = '';
   }
-}
-
-var templateThree = React.createElement(
-  'div',
-  null,
-  React.createElement(
-    'h1',
-    null,
-    user.name ? user.name : 'Anonymous'
-  ),
-  user.age && user.age >= 20 && React.createElement(
-    'p',
-    null,
-    'Age: ',
-    user.age
-  ),
-  getLocation(user.location)
-);
-
-var count = 0;
-var addOne = function addOne() {
-  count++;
-  console.log('addOne', count);
-  renderCounterApp();
+  render();
 };
 
-var minusOne = function minusOne() {
-  count--;
-  console.log('minusOne', count);
-  renderCounterApp();
+var onRemoveAll = function onRemoveAll() {
+  app.options = [];
+  render();
 };
 
-var reset = function reset() {
-  count = 0;
-  console.log('reset', count);
-  renderCounterApp();
-};
+var appRoot = document.getElementById('app');
 
-var renderCounterApp = function renderCounterApp() {
-  var templateFour = React.createElement(
+// create render function that render the new jsx
+var render = function render() {
+  // JSX - JavaScript XML
+  var template = React.createElement(
     'div',
     null,
     React.createElement(
       'h1',
       null,
-      'Count: ',
-      count
+      app.title
+    ),
+    app.subtitle && React.createElement(
+      'p',
+      null,
+      app.subtitle
+    ),
+    React.createElement(
+      'p',
+      null,
+      app.options.length > 0 ? 'Here are your options' : 'No options'
     ),
     React.createElement(
       'button',
-      {
-        id: 'my-id',
-        className: 'button',
-        onClick: addOne
-      },
-      '+1'
+      { onClick: onRemoveAll },
+      'Remove All'
     ),
     React.createElement(
-      'button',
-      { onClick: minusOne },
-      '-1'
+      'ol',
+      null,
+      React.createElement(
+        'li',
+        null,
+        'Item One'
+      ),
+      React.createElement(
+        'li',
+        null,
+        'Iten Two'
+      )
     ),
     React.createElement(
-      'button',
-      { onClick: reset },
-      'reset'
+      'form',
+      { onSubmit: onFormSubmit },
+      React.createElement('input', { type: 'text', name: 'option' }),
+      React.createElement(
+        'button',
+        null,
+        'Add Option'
+      )
     )
   );
 
-  var appRoot = document.getElementById('app');
-
   // Render
-  ReactDOM.render(templateFour, appRoot);
+  ReactDOM.render(template, appRoot);
 };
 
-renderCounterApp();
+render();

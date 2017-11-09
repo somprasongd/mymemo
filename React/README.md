@@ -218,3 +218,36 @@ renderCounterApp();
 ```
 
 ถ้าลองดูจากแทบ Elements ของ Dev tools เมื่อมีการกดปุ่มจะเห็นว่า DOM จะถูกอัพเดทแค่ส่วนของตัวเลขเท่านั้น ไม่ได้ render ใหม่ทั้งหมด ตรงนี้เพราะ react มี virtual dom 
+
+### Forms and Inputs
+
+ตัวอย่าง
+
+```javascript
+<form>
+  <input type="text" name="option"/>
+  <button>Add Option</button>
+</form>
+```
+
+เมื่อกดปุ่ม add option หน้าเวบจะ refresh ทุกครั้ง ดังนี้ต้องเปลี่ยนมาใช้ events handeler ของ form แทน
+
+```javascript
+const onFormSubmit = (e) => {
+  e.preventDefault();
+  
+  console.log('form submited!');
+}
+
+// JSX - JavaScript XML
+var template = (
+  <div>
+    <form onSubmit={onFormSubmit}>
+      <input type="text" name="option"/>
+      <button>Add Option</button>
+    </form>
+  </div>
+);
+```
+
+สามารถเข้าถึง value ได้โดย `const option = e.target.elements.option.value;`
