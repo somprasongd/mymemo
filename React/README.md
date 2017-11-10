@@ -310,3 +310,103 @@ const render = () => {
 
 render();
 ```
+
+## React Component
+
+คือ class ที่สืบทอดมาจาก React.Component และต้องมีฟังก์ชัน `render(){ return (jsx)}`
+
+สามารถทำ Nesting Components ได้ คือ เรียก component ใน component ได้
+
+มีเรื่อง props กับ state ด้วย
+
+**props** 
+
+```javascript
+class Counter extends React.Component {
+  // ถ้าจะมี constructor ต้องรับ props มาเสมอ ซึ่งเป็น props ที่ถูกส่งมาตอนเรียกใช้งานแทก Component นั้นๆ
+  constructor(props){
+    super(props);
+    // เวลาเรียก function จาก event แล้วต้องการใช้ props และ state ต้อง bind(this) เสมอ สามารถทำได้ 2 แบบ
+    // 1. bind ตอนเรียกจาก jsx
+    // 2. bind ทุกฟังก์ชัน ใน constructor เลย
+    this.handleAddOne = this.handleAddOne.bind(this);
+    this.handleMinusOne = this.handleMinusOne.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+    // state คือ object ที่เก็บค่าของ component นั้น ซึ่งทุกครั้งที่ state เปลี่ยน react จะ re-render เสมอ
+    // การประกาศ state
+    this.state = {
+      count: 0
+    }
+  }
+  handleAddOne() {
+    // กับ set ค่าเข้า state ต้องทำผ่าน this.setState
+    // ข้อสังเกต setState จะทำการอัพเดทค่าตามที่ระบุไป ไม่ใช้การ replace object ตัวเดิม
+    this.setState((prevState) => {
+      return {
+        count: prevState.count + 1
+      }
+    });
+  }
+  handleMinusOne() {
+    this.setState((prevState) => {
+      return {
+        count: prevState.count - 1
+      }
+    });
+  }
+  handleReset() {
+    // ถ้าไม่ต้องการใช้ค่าของ state ก่อนหน้า ก็ไม่ต้องมี prevState
+    this.setState(() => {
+      return {
+        count: 0
+      }
+    });
+    // กรณีที่ไม่ต้องการเข้าถึงค่า prevState สามารถเรียกใช้ this.setState ได้อีกแบบ
+    /*
+    this.setState({
+      count: 0
+    })
+    */
+  }
+  render() {
+    return (
+      <div>
+        <h1>Count: </h1>
+        <button onClick={handleAddOne}>+1</button>
+        <button onClick={handleMinusOne}>-1</button>
+        <button onClick={handleReset}>reset</button>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<Counter />, document.getElementById('app'));
+```
+
+**ข้อควรระวัง** this.setState() จะทำงานแบบ async ซึ่งมันจะไปอัพเดทใน virtual DOM ก่อน ไปอัพเดทใน DOM จริง ดังนั้น ถ้าต้องการเข้าถึงค่าของ state ก่อนหน้า ใช้งานเป็น function ถ้าไม่จึงจะสามารถใช้แบบ object ได้ เช่น
+
+```javascript
+  handleReset() {
+    this.setState({
+      count: 0
+    });
+
+    this.setState({
+      count: this.state.count + 1
+    });
+
+    // แบบข้างบนทุกครั้งที่กด reset ค่าจะไม่ใช่ 1 แต่จะเอา this.state.count มาบวก 1 เสมอ เพราะเป็น async
+
+    // ต้องใช้แบบ function แทน จึงจะได้ค่า 1 เพราะมันจะ set count = 0 ก่อน แล้วค่อยส่งไปผ่าน prevState
+    this.setState(() => {
+      return {
+        count: 0
+      }
+    });
+    this.setState((prevState) => {
+      return {
+        count: prevState.count + 1
+      }
+    });
+  }
+```
