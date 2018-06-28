@@ -345,7 +345,7 @@ app.get(/.*fly$/, function (req, res) {
 
 ### Passing parameters ###
 
-- เราสามารถส่ง parameter ไปกับ path ที่เรียกไปได้ โดยใช้ `:paramName` และเรียกใช้งานผ่าน `req.param`
+- เราสามารถส่ง parameter ไปกับ path ที่เรียกไปได้ โดยใช้ `:paramName` และเรียกใช้งานผ่าน `req.params`
 
 ```
 Route path: /users/:userId/books/:bookId
